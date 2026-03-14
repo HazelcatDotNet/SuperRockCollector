@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 String[] savedStrings;
 String[] loadedStrings;
@@ -10,10 +13,14 @@ float farmCenter;
 float screenSize;
 ArrayList<Rock> rocks;
 
+// to add a new rock: add file name to both this list and the Rock class
+String[] rockFileNames = { "standard" };
+Dictionary<String, PImage> rockImages = new Hashtable<>();
+
 Random random = new Random();
 
 void setup() {
-  loadedStrings = loadStrings("data/save.silly");
+  //loadedStrings = loadStrings("data/save.silly");
   
   size(800, 800);
   screenSize = 800;
@@ -21,6 +28,9 @@ void setup() {
   farmCenter = (corner + screenSize) / 2;
   
   background = loadImage("data/art/background.png");
+  
+  loadRockImages();
+  
   rocks = new ArrayList<Rock>();
   
   for (int i = 0; i < 10; i++) {
@@ -29,6 +39,7 @@ void setup() {
 }
 
 void draw() {
+  imageMode(CORNER);
   image(background, 0, 0, width, height);
   circle(corner, corner, 5);
   
@@ -65,4 +76,12 @@ void spawnRock() {
   }
   
   rocks.add(rock);
+}
+
+void loadRockImages() {
+  for (int i = 0; i < rockFileNames.length; i++) {
+    String rockFileName = rockFileNames[i];
+    String filePath = "data/art/rocks/" + rockFileName + ".png";
+    rockImages.put(rockFileName, loadImage(filePath));
+  }
 }

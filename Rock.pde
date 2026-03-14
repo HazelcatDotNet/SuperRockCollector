@@ -1,6 +1,8 @@
 class Rock {
   
   int id;
+  String rockFileName;
+  PImage img;
   
   float locX;
   float locY;
@@ -20,12 +22,16 @@ class Rock {
     
     velX = 1.5;
     velY = 1.5;
-    
+
+    rockFileName = "standard";
+    setImage();
   }
   
   void display() {
     rectMode(CENTER);
-    square(locX, locY, size);
+    //square(locX, locY, size);
+    imageMode(CENTER);
+    image(img, locX, locY, size, size);
   }
   
   // move the rock, bouncing it off walls if necessary
@@ -65,6 +71,10 @@ class Rock {
       return true;
     }
     return false;
+  }
+  
+  void setImage() {
+    img = rockImages.get(rockFileName);
   }
   
 }
