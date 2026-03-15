@@ -7,13 +7,17 @@ public class Rock {
   String rockFileName;
   PImage img;
   
-  float locX;
-  float locY;
-  float velX;
-  float velY;
+  PVector loc;
+  float speed;
+  
+  // current destination of the rock
+  PVector dest;
+  boolean waitingToMove = false;
+  int waitTimeRemaining;
   
   float sizeX;
   float sizeY;
+  
   float leftEdge;
   float rightEdge;
   float upEdge;
@@ -21,31 +25,68 @@ public class Rock {
   
   Rock() {
     setId();
-    setSize(20, 20);
+    setSize(30, 30);
+    loc = new PVector();
     setLocation(farmCenter, farmCenter);
+    chooseDest();
     
-    velX = 1.5;
-    velY = 1.5;
+    speed = ceil(frameRate / 40.0);
   }
   
   void display() {
     rectMode(CENTER);
     //square(locX, locY, size);
     imageMode(CENTER);
-    image(img, locX, locY, sizeX, sizeY);
+    image(img, loc.x, loc.y, sizeX, sizeY);
   }
   
   // move the rock, bouncing it off walls if necessary
   void move() {
-    setLocation(locX + velX, locY + velY);
-    
-    if (rightEdge > screenSize - 1 || leftEdge < corner) { //<>//
-      velX *= -1;
+    if (waitingToMove) {
+      return;
     }
     
-    if (downEdge > screenSize - 1 || upEdge < corner) {
-      velY *= -1;
+    // create direction vector
+    PVector dir = PVector.sub(dest, loc);
+    float dist = dir.mag();
+    
+    // move toward destination
+    if (dist > speed) {
+      dir.normalize();
+      dir.mult(speed);
+      setLocation(loc.x + dir.x, loc.y + dir.y);
+    } else {
+      setLocation(dest.x, dest.y);
+      startToRestBetweenMoves();
+    } //<>//
+  }
+  
+  void startToRestBetweenMoves() {
+    waitingToMove = true;
+    waitTimeRemaining = random.nextInt(frameRate, frameRate * 5);
+  }
+  
+  void waitToMove() {
+    if (waitingToMove) {
+      waitTimeRemaining--;
+      
+      if (waitTimeRemaining <= 0) {
+        waitingToMove = false;
+        chooseDest();
+      }
     }
+   
+  }
+  
+  void chooseDest() {
+    int leftBound = int(corner + sizeX);
+    int rightBound = int(screenSize - sizeX);
+    int upBound = int(corner + sizeY);
+    int downBound = int(screenSize - sizeY);
+    
+    int destX = random.nextInt(leftBound, rightBound);
+    int destY = random.nextInt(upBound, downBound);
+    dest = new PVector(destX, destY);
   }
   
   // sets the size of the rock
@@ -64,16 +105,16 @@ public class Rock {
   
   // sets the location of the rock, updating all edge locations as well
   void setLocation(float newX, float newY) {
-    locX = newX;
-    locY = newY;
+    loc.x = newX;
+    loc.y = newY;
     
     float halfSizeX = sizeX / 2;
     float halfSizeY = sizeY / 2;
     
-    leftEdge = locX - halfSizeX;
-    rightEdge = locX + halfSizeX;
-    upEdge = locY - halfSizeY;
-    downEdge = locY + halfSizeY;
+    leftEdge = loc.x - halfSizeX;
+    rightEdge = loc.x + halfSizeX;
+    upEdge = loc.y - halfSizeY;
+    downEdge = loc.y + halfSizeY;
   }
   
   // returns whether or not the mouse cursor is currently within the bounds of a square rock

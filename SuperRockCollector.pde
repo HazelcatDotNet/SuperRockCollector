@@ -4,6 +4,8 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+int frameRate = 30;
+
 String[] savedStrings;
 String[] loadedStrings;
 
@@ -28,6 +30,7 @@ void setup() {
   //loadedStrings = loadStrings("data/save.silly");
   
   size(800, 800);
+  frameRate(frameRate);
   screenSize = 800;
   corner = screenSize / 5.94;
   farmCenter = (corner + screenSize) / 2;
@@ -52,6 +55,7 @@ void draw() {
     Rock rock = rocks.get(i);
     rock.display();
     rock.move();
+    rock.waitToMove();
   }
 }
 
@@ -71,14 +75,6 @@ void spawnRock() {
   float locX = random.nextInt(int(corner), int(screenSize));
   float locY = random.nextInt(int(corner), int(screenSize));
   rock.setLocation(locX, locY);
-  
-  if (random.nextBoolean()) {
-    rock.velX *= -1;
-  }
-  
-  if (random.nextBoolean()) {
-    rock.velY *= -1;
-  }
   
   rocks.add(rock);
 }
