@@ -7,6 +7,11 @@ import java.util.Hashtable;
 String[] savedStrings;
 String[] loadedStrings;
 
+
+public enum RockType {
+  STANDARD;
+}
+
 PImage background;
 float corner;
 float farmCenter;
@@ -61,7 +66,7 @@ void mousePressed() {
 }
 
 void spawnRock() {
-  Rock rock = new Rock();
+  Rock rock = new StandardRock();
   
   float locX = random.nextInt(int(corner), int(screenSize));
   float locY = random.nextInt(int(corner), int(screenSize));

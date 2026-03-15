@@ -1,6 +1,9 @@
-class Rock {
+public class Rock {
   
-  int id;
+  String id;
+  
+  RockType rockType;
+  
   String rockFileName;
   PImage img;
   
@@ -9,29 +12,27 @@ class Rock {
   float velX;
   float velY;
   
-  float size;
+  float sizeX;
+  float sizeY;
   float leftEdge;
   float rightEdge;
   float upEdge;
   float downEdge;
   
   Rock() {
-    id = 0;
-    setSize(20);
+    setId();
+    setSize(20, 20);
     setLocation(farmCenter, farmCenter);
     
     velX = 1.5;
     velY = 1.5;
-
-    rockFileName = "standard";
-    setImage();
   }
   
   void display() {
     rectMode(CENTER);
     //square(locX, locY, size);
     imageMode(CENTER);
-    image(img, locX, locY, size, size);
+    image(img, locX, locY, sizeX, sizeY);
   }
   
   // move the rock, bouncing it off walls if necessary
@@ -48,8 +49,17 @@ class Rock {
   }
   
   // sets the size of the rock
-  void setSize(float newSize) {
-    size = newSize;
+  void setSize(float newSizeX, float newSizeY) {
+    sizeX = newSizeX;
+    sizeY = newSizeY;
+  }
+  
+  void setId() {
+    id = random.ints(10, 'a', 'z' + 1)
+      .collect(StringBuilder::new,
+        StringBuilder::appendCodePoint,
+        StringBuilder::append)
+      .toString();
   }
   
   // sets the location of the rock, updating all edge locations as well
@@ -57,12 +67,13 @@ class Rock {
     locX = newX;
     locY = newY;
     
-    float halfSize = size / 2;
+    float halfSizeX = sizeX / 2;
+    float halfSizeY = sizeY / 2;
     
-    leftEdge = locX - halfSize;
-    rightEdge = locX + halfSize;
-    upEdge = locY - halfSize;
-    downEdge = locY + halfSize;
+    leftEdge = locX - halfSizeX;
+    rightEdge = locX + halfSizeX;
+    upEdge = locY - halfSizeY;
+    downEdge = locY + halfSizeY;
   }
   
   // returns whether or not the mouse cursor is currently within the bounds of a square rock
