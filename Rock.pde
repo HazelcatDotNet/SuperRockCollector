@@ -89,6 +89,14 @@ public class Rock {
     dest = new PVector(destX, destY);
   }
   
+  int clicked() {
+    return 1;
+  }
+  
+  boolean shouldDestroyOnClick() {
+    return true;
+  }
+  
   // sets the size of the rock
   void setSize(float newSizeX, float newSizeY) {
     sizeX = newSizeX;
