@@ -5,7 +5,9 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 int frameRate = 30;
+
 int lastXinYCheck = 0;
+int lastMaisySwitch = 0;
 
 String[] savedStrings;
 String[] loadedStrings;
@@ -16,6 +18,9 @@ public enum RockType {
 }
 
 PImage background;
+PImage maisy1;
+PImage maisy2;
+
 float corner;
 float farmCenter;
 float screenSize;
@@ -39,7 +44,7 @@ void setup() {
   corner = screenSize / 5.94;
   farmCenter = (corner + screenSize) / 2;
   
-  background = loadImage("data/art/background.png");
+  loadUiImages();
   
   loadRockImages();
   
@@ -77,15 +82,4 @@ boolean xChanceInYSeconds(int x, int y) {
     return random(1) < (float)x / y;
   }
   return false;
-}
-
-// like xChanceInYSeconds, but the rate of successes scales with a current and max count
-// this is NOT a discreet chance with a once-per-second roll, but rather a continuous per-frame probability
-boolean xChanceInYSecondsScaled(int x, int y, int currentCount, int maxCount) {
-  float baseChance = (float)x / (y * max(frameRate, 1));
-  
-  float fullness = (float)currentCount / maxCount;
-  float modifier = pow(1.0 - fullness, 4);
-  
-  return random(1) < baseChance * modifier;
 }
