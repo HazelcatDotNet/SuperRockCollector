@@ -13,11 +13,11 @@ void drawUi() {
 }
 
 void loadUiImages() {
-  background = loadImage("data/art/background.png");
-  maisy1 = loadImage("data/art/maisy-1.png");
-  maisy2 = loadImage("data/art/maisy-2.png");
-  maisySpeechBubble1 = loadImage("data/art/maisy-speech-bubble-1.png");
-  maisySpeechBubble2 = loadImage("data/art/maisy-speech-bubble-2.png");
+  background = loadImage("../data/art/background.png");
+  maisy1 = loadImage("../data/art/maisy-1.png");
+  maisy2 = loadImage("../data/art/maisy-2.png");
+  maisySpeechBubble1 = loadImage("../data/art/maisy-speech-bubble-1.png");
+  maisySpeechBubble2 = loadImage("../data/art/maisy-speech-bubble-2.png");
 }
 
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
@@ -57,7 +57,7 @@ void drawMaisyText() {
 void loadRockImages() {
   for (int i = 0; i < rockFileNames.length; i++) {
     String rockFileName = rockFileNames[i];
-    String filePath = "data/art/rocks/" + rockFileName + ".png";
+    String filePath = "../data/art/rocks/" + rockFileName + ".png";
     rockImages.put(rockFileName, loadImage(filePath));
   }
 }
