@@ -4,37 +4,6 @@ import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-int frameRate = 30;
-
-int lastXinYCheck = 0;
-int lastMaisySwitch = 0;
-
-String[] savedStrings;
-String[] loadedStrings;
-
-
-public enum RockType {
-  STANDARD;
-}
-
-PImage background;
-PImage maisy1;
-PImage maisy2;
-
-float corner;
-float farmCenter;
-float screenSize;
-ArrayList<Rock> rocks;
-
-// to add a new rock: add file name to both this list and the Rock class
-String[] rockFileNames = { "standard" };
-Dictionary<String, PImage> rockImages = new Hashtable<>();
-
-Random random = new Random();
-
-long totalRocks;
-int rocksOnScreenLimit = 20;
-
 void setup() {
   //loadedStrings = loadStrings("data/save.silly");
   
@@ -44,15 +13,12 @@ void setup() {
   corner = screenSize / 5.94;
   farmCenter = (corner + screenSize) / 2;
   
+  maisyPokeLines = loadStrings("data/maisy-poke-lines.txt");
+  maisyLastNames = loadStrings("data/maisy-last-names.txt");
   loadUiImages();
-  
   loadRockImages();
   
   rocks = new ArrayList<Rock>();
-  
-  for (int i = 0; i < 10; i++) {
-    //spawnRock();
-  }
 }
 
 void draw() {
@@ -60,18 +26,12 @@ void draw() {
   
   incrementRocks();
   attemptToSpawnRocks();
+  //drawMaisyHexagonHitbox();
 }
 
 void mousePressed() {
   checkForRockClicks();
-}
-
-void loadRockImages() {
-  for (int i = 0; i < rockFileNames.length; i++) {
-    String rockFileName = rockFileNames[i];
-    String filePath = "data/art/rocks/" + rockFileName + ".png";
-    rockImages.put(rockFileName, loadImage(filePath));
-  }
+  checkForMaisyClick();
 }
 
 // calculates random events per second. this check assumes it is run every frame
@@ -82,4 +42,18 @@ boolean xChanceInYSeconds(int x, int y) {
     return random(1) < (float)x / y;
   }
   return false;
+}
+
+// like split(), but only splits on the first instance of the delimiter
+String[] splitFirst(String text, String delimiter) {
+  int index = text.indexOf(delimiter);
+
+  if (index == -1) {
+    return new String[] { text };
+  }
+
+  String left = text.substring(0, index);
+  String right = text.substring(index + delimiter.length());
+
+  return new String[] { left, right };
 }

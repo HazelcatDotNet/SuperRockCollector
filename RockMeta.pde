@@ -44,3 +44,9 @@ void spawnRock() {
   
   rocks.add(rock);
 }
+
+void spawnXRocks(int x) {
+  for (int i = 0; i < x; i++) {
+    spawnRock();
+  }
+}
