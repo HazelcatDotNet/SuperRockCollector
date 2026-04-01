@@ -22,11 +22,11 @@ void checkForMaisyClick() {
     checkForSpecialPokeText(index + 1); // add 1 because line numbers start at 1
     
     // decide how many maisy noises should be made for the monologue
-    charsLeftInMaisyTalkSound = maisyTalkingText.length();
-    if (charsLeftInMaisyTalkSound > 12) charsLeftInMaisyTalkSound = floor(charsLeftInMaisyTalkSound / 3.5);
+    maisySoundsRemaining = maisyTalkingText.length();
+    if (maisySoundsRemaining > 12) maisySoundsRemaining = floor(maisySoundsRemaining / 3.5);
     
-    maisyShouldStopTalkingMillis = millis() + (maisyTalkSoundMsInterval * charsLeftInMaisyTalkSound * 2);
-  }
+    maisyShouldStopTalkingMillis = millis() + (maisyTalkSoundMsInterval * maisySoundsRemaining * 2);
+  } 
 }
 
 void checkForSpecialPokeText(int index) {

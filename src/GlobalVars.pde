@@ -22,7 +22,7 @@ boolean maisyIsTalking;
 String maisyTalkingText = "";
 int maisyTextLineCharLimit = 23;
 SoundFile maisyTalkSound;
-int charsLeftInMaisyTalkSound;
+int maisySoundsRemaining;
 int maisyTalkSoundMsInterval = 130;
 int maisyShouldStopTalkingMillis;
 

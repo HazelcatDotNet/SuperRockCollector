@@ -21,7 +21,7 @@ void loadUiImages() {
 }
 
 void loadSounds() {
-  maisyTalkSound = new SoundFile(this, "../data/maisy-talk.wav");
+  maisyTalkSound = new SoundFile(this, "../data/sfx/maisy-talk.wav");
 }
 
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
@@ -59,10 +59,10 @@ void drawMaisyText() {
     
     drawMaisySpeechBubble();
     
-    // make the maisy noises
-    if (charsLeftInMaisyTalkSound > 0 && intervalMs(maisyTalkSoundMsInterval)) {
+    // make the maisy noises while she talks
+    if (maisySoundsRemaining > 0 && intervalMs(maisyTalkSoundMsInterval)) {
       maisyTalkSound.play();
-      charsLeftInMaisyTalkSound--;
+      maisySoundsRemaining--;
     }
     
     // draw the monologue text
