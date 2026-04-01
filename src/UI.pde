@@ -20,6 +20,10 @@ void loadUiImages() {
   maisySpeechBubble2 = loadImage("../data/art/maisy-speech-bubble-2.png");
 }
 
+void loadSounds() {
+  maisyTalkSound = new SoundFile(this, "../data/maisy-talk.wav");
+}
+
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
   int phase = (millis() / millisBetweenChanges) % 2;
   PImage imgToDraw = (phase == 0) ? img1 : img2;
@@ -44,10 +48,24 @@ void drawMaisySpeechBubble() {
   animateDrawing(maisySpeechBubble1, maisySpeechBubble2, speechBubbleX, speechBubbleY, speechBubbleWidth, speechBubbleHeight, 250);
 }
 
+// draws maisy's speech bubble, and the text inside it, if she is talking. also makes the noises :)
 void drawMaisyText() {
   if (maisyIsTalking) {
+    
+    // check if it's time for maisy to stop talking
+    if (millis() >= maisyShouldStopTalkingMillis) {
+      maisyIsTalking = false;
+    }
+    
     drawMaisySpeechBubble();
     
+    // make the maisy noises
+    if (charsLeftInMaisyTalkSound > 0 && intervalMs(maisyTalkSoundMsInterval)) {
+      maisyTalkSound.play();
+      charsLeftInMaisyTalkSound--;
+    }
+    
+    // draw the monologue text
     textSize(corner / 5);
     String wrappedText = wrapText(maisyTalkingText, maisyTextLineCharLimit);
     text(wrappedText, screenSize / 1.6, corner / 3.25);

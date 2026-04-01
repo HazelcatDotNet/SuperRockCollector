@@ -3,18 +3,20 @@ import java.util.Random;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import processing.sound.*;
 
 void setup() {
   //loadedStrings = loadStrings("data/save.silly");
   
   size(800, 800);
-  frameRate(frameRate);
+  frameRate(framerate);
   screenSize = 800;
   corner = screenSize / 5.94;
   farmCenter = (corner + screenSize) / 2;
   
   maisyPokeLines = loadStrings("../data/maisy-poke-lines.txt");
   maisyLastNames = loadStrings("../data/maisy-last-names.txt");
+  loadSounds();
   loadUiImages();
   loadRockImages();
   
@@ -56,4 +58,10 @@ String[] splitFirst(String text, String delimiter) {
   String right = text.substring(index + delimiter.length());
 
   return new String[] { left, right };
+}
+
+boolean intervalMs(int numMillis) {
+  int intervalFrames = int((numMillis / 1000.0) * frameRate);
+  if (frameCount % intervalFrames == 0) return true;
+  return false;
 }

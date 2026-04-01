@@ -1,4 +1,4 @@
-int frameRate = 30;
+int framerate = 30;
 
 int lastXinYCheck = 0;
 int lastMaisySwitch = 0;
@@ -20,7 +20,11 @@ String[] maisyPokeLines;
 String[] maisyLastNames;
 boolean maisyIsTalking;
 String maisyTalkingText = "";
-int maisyTextLineCharLimit = 24;
+int maisyTextLineCharLimit = 23;
+SoundFile maisyTalkSound;
+int charsLeftInMaisyTalkSound;
+int maisyTalkSoundMsInterval = 130;
+int maisyShouldStopTalkingMillis;
 
 float corner;
 float farmCenter;

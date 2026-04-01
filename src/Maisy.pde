@@ -13,13 +13,19 @@ boolean mouseOnMaisy() {
 
 // runs whenever mouse is pressed
 void checkForMaisyClick() {
-  if (mouseOnMaisy()) {
+  if (mouseOnMaisy() && !maisyIsTalking) {
     maisyIsTalking = true;
     
     int index = int(random(maisyPokeLines.length));
     //index = 18 - 1; // defined index for debugging
     maisyTalkingText = maisyPokeLines[index];
     checkForSpecialPokeText(index + 1); // add 1 because line numbers start at 1
+    
+    // decide how many maisy noises should be made for the monologue
+    charsLeftInMaisyTalkSound = maisyTalkingText.length();
+    if (charsLeftInMaisyTalkSound > 12) charsLeftInMaisyTalkSound = floor(charsLeftInMaisyTalkSound / 3.5);
+    
+    maisyShouldStopTalkingMillis = millis() + (maisyTalkSoundMsInterval * charsLeftInMaisyTalkSound * 2);
   }
 }
 

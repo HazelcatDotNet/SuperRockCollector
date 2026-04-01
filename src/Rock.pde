@@ -63,7 +63,7 @@ public class Rock {
   
   void startToRestBetweenMoves() {
     waitingToMove = true;
-    waitTimeRemaining = random.nextInt(frameRate, frameRate * 5);
+    waitTimeRemaining = random.nextInt(int(frameRate), int(frameRate) * 5);
   }
   
   void waitToMove() {
