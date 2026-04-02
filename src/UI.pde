@@ -42,7 +42,16 @@ void drawMaisyText() {
     
     // check if it's time for maisy to stop talking
     if (millis() >= maisyShouldStopTalkingMillis) {
-      maisyIsTalking = false;
+      
+      // if maisy is done talking, set maisyIsTalking = false
+      if (maisyTalkingTextLines.isEmpty()) {
+        maisyIsTalking = false;
+        
+        // and if maisy still has more lines in her monologue
+      } else {
+        getNextMaisyLine(-1);
+      }
+      
     }
     
     drawMaisySpeechBubble();

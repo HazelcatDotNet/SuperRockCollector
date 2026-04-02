@@ -14,7 +14,9 @@ public enum RockType {
 String[] maisyPokeLines;
 String[] maisyLastNames;
 boolean maisyIsTalking;
+ArrayList<String> maisyTalkingTextLines;
 String maisyTalkingText = "";
+int maisyTalkingLinesIndesx;
 int maisyTextLineCharLimit = 23;
 int maisySoundsRemaining;
 int maisyTalkSoundMsInterval = 130;

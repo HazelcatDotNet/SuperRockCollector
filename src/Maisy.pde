@@ -17,16 +17,25 @@ void checkForMaisyClick() {
     maisyIsTalking = true;
     
     int index = int(random(maisyPokeLines.length));
-    //index = 18 - 1; // defined index for debugging
-    maisyTalkingText = maisyPokeLines[index];
-    checkForSpecialPokeText(index + 1); // add 1 because line numbers start at 1
-    
-    // decide how many maisy noises should be made for the monologue
-    maisySoundsRemaining = maisyTalkingText.length();
-    if (maisySoundsRemaining > 12) maisySoundsRemaining = floor(maisySoundsRemaining / 3.5);
-    
-    maisyShouldStopTalkingMillis = millis() + (maisyTalkSoundMsInterval * maisySoundsRemaining * 2);
+    //index = 22 - 1; // defined index for debugging
+    maisyTalkingTextLines = new ArrayList<String>(Arrays.asList(maisyPokeLines[index].split(" / ")));
+    getNextMaisyLine(index + 1);
   } 
+}
+
+void getNextMaisyLine(int lineNumber) {
+  maisyTalkingText = maisyTalkingTextLines.remove(0);
+  
+  if (lineNumber > -1) {
+    checkForSpecialPokeText(lineNumber); // add 1 because line numbers start at 1
+  }
+  
+  // decide how many maisy noises should be made for the monologue
+  maisySoundsRemaining = maisyTalkingText.length();
+  if (maisySoundsRemaining > 12) maisySoundsRemaining = floor(maisySoundsRemaining / 3.5);
+  
+  // at what point should maisy stop talking
+  maisyShouldStopTalkingMillis = millis() + (maisyTalkSoundMsInterval * maisySoundsRemaining * 2);
 }
 
 void checkForSpecialPokeText(int index) {
