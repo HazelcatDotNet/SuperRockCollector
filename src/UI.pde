@@ -12,18 +12,6 @@ void drawUi() {
   // circle(corner, corner, 5);
 }
 
-void loadUiImages() {
-  background = loadImage("../data/art/background.png");
-  maisy1 = loadImage("../data/art/maisy-1.png");
-  maisy2 = loadImage("../data/art/maisy-2.png");
-  maisySpeechBubble1 = loadImage("../data/art/maisy-speech-bubble-1.png");
-  maisySpeechBubble2 = loadImage("../data/art/maisy-speech-bubble-2.png");
-}
-
-void loadSounds() {
-  maisyTalkSound = new SoundFile(this, "../data/sfx/maisy-talk.wav");
-}
-
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
   int phase = (millis() / millisBetweenChanges) % 2;
   PImage imgToDraw = (phase == 0) ? img1 : img2;

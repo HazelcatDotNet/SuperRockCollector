@@ -19,7 +19,7 @@ void checkForRockClicks() {
     Rock rock = rocks.get(i);
     if (rock.mouseOnRock()) {
       rocks.remove(i);
-      totalRocks += rock.clicked();
+      totalRocks += rock.onClick();
       
       if (rock.shouldDestroyOnClick()) {
         rock = null;

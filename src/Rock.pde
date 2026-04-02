@@ -89,7 +89,8 @@ public class Rock {
     dest = new PVector(destX, destY);
   }
   
-  int clicked() {
+  int onClick() {
+    playSound();
     return 1;
   }
   
@@ -123,6 +124,10 @@ public class Rock {
     rightEdge = loc.x + halfSizeX;
     upEdge = loc.y - halfSizeY;
     downEdge = loc.y + halfSizeY;
+  }
+  
+  void playSound() {
+    rockPopSound.play();
   }
   
   // returns whether or not the mouse cursor is currently within the bounds of a square rock
