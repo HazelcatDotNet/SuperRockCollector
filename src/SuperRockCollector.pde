@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Iterator;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.Hashtable;

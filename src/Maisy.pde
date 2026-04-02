@@ -17,7 +17,8 @@ void checkForMaisyClick() {
     maisyIsTalking = true;
     
     int index = int(random(maisyPokeLines.length));
-    //index = 22 - 1; // defined index for debugging
+    //index = 24 - 1; // defined line number for debugging
+    
     maisyTalkingTextLines = new ArrayList<String>(Arrays.asList(maisyPokeLines[index].split(" / ")));
     getNextMaisyLine(index + 1);
   } 
@@ -38,13 +39,34 @@ void getNextMaisyLine(int lineNumber) {
   maisyShouldStopTalkingMillis = millis() + (maisyTalkSoundMsInterval * maisySoundsRemaining * 2);
 }
 
-void checkForSpecialPokeText(int index) {
-  if (index == 10) {
+// some poke lines have special effects - this function manages that
+void checkForSpecialPokeText(int l) {
+  if (l == 10) {
     int lastNameIndex = int(random(maisyLastNames.length));
     maisyTalkingText += maisyLastNames[lastNameIndex];
-  } else if (index == 12) {
+    
+  } else if (l == 12) {
     totalRocks++;
-  } else if (index == 16) {
+    
+  } else if (l == 16) {
     totalRocks--;
+    
+  } else if (l == 23) {
+    int numRocks = rocks.size();
+    if (numRocks == 1) {
+      maisyTalkingText = maisyTalkingText.replace("are", "is");
+      maisyTalkingText = maisyTalkingText.replace("rocks", "rock");
+    }
+    maisyTalkingText = maisyTalkingText.replace("x", str(numRocks));
+    
+  } else if (l == 24) {
+    Iterator<Rock> it = rocks.iterator();
+    
+    while (it.hasNext()) {
+      Rock r = it.next();
+      if (r.rockType == RockType.STANDARD) {
+        it.remove();
+      }
+    }
   }
 }
