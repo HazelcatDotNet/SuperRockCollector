@@ -142,4 +142,25 @@ public class Rock {
     img = rockImages.get(rockFileName);
   }
   
+  // Field order (pipe-delimited):
+  // 0:id | 1:rockType | 2:rockFileName | 3:loc.x | 4:loc.y |
+  // 5:dest.x | 6:dest.y | 7:speed | 8:sizeX | 9:sizeY |
+  // 10:waitingToMove | 11:waitTimeRemaining
+  final String DELIM = "|";
+
+  String toData() {
+    return id                                      + DELIM +
+           rockType                                + DELIM +
+           rockFileName                            + DELIM +
+           loc.x                                   + DELIM +
+           loc.y                                   + DELIM +
+           dest.x                                  + DELIM +
+           dest.y                                  + DELIM +
+           speed                                   + DELIM +
+           sizeX                                   + DELIM +
+           sizeY                                   + DELIM +
+           waitingToMove                           + DELIM +
+           (waitingToMove ? waitTimeRemaining : 0);
+  }
+  
 }

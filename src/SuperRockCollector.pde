@@ -7,9 +7,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import processing.sound.*;
 
-void setup() {
-  //loadedStrings = loadStrings("data/save.silly");
-  
+void setup() {  
   size(800, 800);
   frameRate(framerate);
   screenSize = 800;
@@ -23,6 +21,8 @@ void setup() {
   loadRockImages();
   
   rocks = new ArrayList<Rock>();
+  
+  loadData();
 }
 
 void draw() {
@@ -36,6 +36,12 @@ void draw() {
 void mousePressed() {
   checkForRockClicks();
   checkForMaisyClick();
+}
+
+void keyPressed() {
+  if (key == 's' || key == 'S') {
+    saveData();
+  }
 }
 
 // calculates random events per second. this check assumes it is run every frame
