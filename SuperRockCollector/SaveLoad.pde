@@ -35,6 +35,7 @@ void saveData() {
   lines.add("totalRocks=" + totalRocks);
   lines.add("oldScreenSize=" + width);
   lines.add("newScreenSize=" + newScreenSize);
+  lines.add("newFrameRate=" + newFrameRate);
   // add future simple variables here, e.g.:
   //   lines.add("coins=" + coins);
   lines.add("[/vars]");
@@ -51,15 +52,20 @@ void saveData() {
           + ", rocks=" + rocks.size());
 }
 
+void setSaveDefaults() {
+  totalRocks = 0;
+  oldScreenSize = 800;
+  newScreenSize = 800;
+  frameRate(30);
+  rocks = new ArrayList<Rock>();
+}
+
 // ------------------------------------------------------------
 //  LOAD
 // ------------------------------------------------------------
 void loadData() {
   // Initialise defaults so the game works even without a save file
-  totalRocks = 0;
-  oldScreenSize = 800;
-  newScreenSize = 800;
-  rocks      = new ArrayList<Rock>();
+  setSaveDefaults();
 
   String[] lines = loadStrings(dataPath(SAVE_NAME));
   if (lines == null) {
@@ -97,6 +103,8 @@ void loadData() {
         if (newScreenSize != oldScreenSize) {
           windowResize(newScreenSize, newScreenSize);
         }
+      } else if (key.equals("newFrameRate")) {
+        if (newFrameRate > 0) frameRate(int(value));
       }
       // add future simple variables here, e.g.:
       //   else if (key.equals("coins")) coins = int(value);

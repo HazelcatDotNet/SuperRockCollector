@@ -58,7 +58,7 @@ public class Rock {
     } else {
       setLocation(dest.x, dest.y);
       startToRestBetweenMoves();
-    } //<>//
+    } //<>// //<>// //<>//
   }
   
   void startToRestBetweenMoves() {
