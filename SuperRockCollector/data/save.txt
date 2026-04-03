@@ -1,0 +1,6 @@
+[vars]
+totalRocks=1
+[/vars]
+[rocks]
+rddxdzprxv|STANDARD|standard|446.47247|508.31622|392.0|532.0|1.0|30.0|30.0|false|0
+[/rocks]

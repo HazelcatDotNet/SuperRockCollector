@@ -72,7 +72,7 @@ void drawMaisyText() {
 void loadRockImages() {
   for (int i = 0; i < rockFileNames.length; i++) {
     String rockFileName = rockFileNames[i];
-    String filePath = "../data/art/rocks/" + rockFileName + ".png";
+    String filePath = dataPath("art/rocks") + "\\" + rockFileName + ".png";
     rockImages.put(rockFileName, loadImage(filePath));
   }
 }

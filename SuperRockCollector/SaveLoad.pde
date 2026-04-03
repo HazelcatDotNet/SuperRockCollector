@@ -22,7 +22,7 @@
 //       reconstruct objects with a matching fromData() factory.
 // ============================================================
 
-final String SAVE_PATH = "../data/save.txt";
+String SAVE_NAME = "save.txt";
 
 // ------------------------------------------------------------
 //  SAVE
@@ -44,7 +44,7 @@ void saveData() {
   }
   lines.add("[/rocks]");
 
-  saveStrings(SAVE_PATH, lines.toArray(new String[0]));
+  saveStrings(dataPath(SAVE_NAME), lines.toArray(new String[0]));
   println("[SaveLoad] Game saved. totalRocks=" + totalRocks
           + ", rocks=" + rocks.size());
 }
@@ -57,7 +57,7 @@ void loadData() {
   totalRocks = 0;
   rocks      = new ArrayList<Rock>();
 
-  String[] lines = loadStrings(SAVE_PATH);
+  String[] lines = loadStrings(dataPath(SAVE_NAME));
   if (lines == null) {
     println("[SaveLoad] No save file found — starting fresh.");
     return;

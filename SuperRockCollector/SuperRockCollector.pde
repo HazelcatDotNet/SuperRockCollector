@@ -14,8 +14,8 @@ void setup() {
   corner = screenSize / 5.94;
   farmCenter = (corner + screenSize) / 2;
   
-  maisyPokeLines = loadStrings("../data/maisy-poke-lines.txt");
-  maisyLastNames = loadStrings("../data/maisy-last-names.txt");
+  maisyPokeLines = loadStrings(dataPath("maisy-poke-lines.txt"));
+  maisyLastNames = loadStrings(dataPath("maisy-last-names.txt"));
   loadSounds();
   loadUiImages();
   loadRockImages();
