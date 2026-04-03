@@ -63,8 +63,9 @@ void drawMaisyText() {
     }
     
     // draw the monologue text
-    textSize(corner / 5);
-    String wrappedText = wrapText(maisyTalkingText, maisyTextLineCharLimit);
+    textSize(maisyTextSize);
+    float scaler = defaultMaisyTextSize / maisyTextSize;
+    String wrappedText = wrapText(maisyTalkingText, floor(maisyTextLineCharLimit * scaler));
     text(wrappedText, width / 1.6, corner / 3.25);
   }
 }
@@ -131,5 +132,6 @@ void startSoundLoop(SoundFile sound) {
 void calculateScreenAreas() {
   corner = width / 5.94;
   farmCenter = (corner + width) / 2;
-  loaded = false;
+  defaultMaisyTextSize = corner / 5;
+  maisyTextSize = defaultMaisyTextSize;
 }

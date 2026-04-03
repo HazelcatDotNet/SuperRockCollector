@@ -19,6 +19,8 @@ int maisyTextLineCharLimit = 23;
 int maisySoundsRemaining;
 int maisyTalkSoundMsInterval = 130;
 int maisyShouldStopTalkingMillis;
+float defaultMaisyTextSize;
+float maisyTextSize;
 
 float corner;
 float farmCenter;

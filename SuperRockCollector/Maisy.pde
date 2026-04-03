@@ -17,7 +17,7 @@ void checkForMaisyClick() {
     maisyIsTalking = true;
     
     int index = int(random(maisyPokeLines.length));
-    //index = 24 - 1; // defined line number for debugging
+    //index = 34 - 1; // defined line number for debugging
     
     maisyTalkingTextLines = new ArrayList<String>(Arrays.asList(maisyPokeLines[index].split(" / ")));
     getNextMaisyLine(index + 1);
@@ -26,6 +26,7 @@ void checkForMaisyClick() {
 
 void getNextMaisyLine(int lineNumber) {
   maisyTalkingText = maisyTalkingTextLines.remove(0);
+  setMaisyTextSize();
   
   if (lineNumber > -1) {
     checkForSpecialPokeText(lineNumber); // add 1 because line numbers start at 1
@@ -35,8 +36,15 @@ void getNextMaisyLine(int lineNumber) {
   maisySoundsRemaining = maisyTalkingText.length();
   if (maisySoundsRemaining > 12) maisySoundsRemaining = floor(maisySoundsRemaining / 3.5);
   
+  int maxMaisySounds = 60;
+  if (maisySoundsRemaining > maxMaisySounds) maisySoundsRemaining = maxMaisySounds;
+  
+  int maisyTalkTime = (maisyTalkSoundMsInterval * maisySoundsRemaining * 2);
+  int minimumMaisyTalkTime = 1500;
+  if (maisyTalkTime < minimumMaisyTalkTime) maisyTalkTime = minimumMaisyTalkTime;
+  
   // at what point should maisy stop talking
-  maisyShouldStopTalkingMillis = millis() + (maisyTalkSoundMsInterval * maisySoundsRemaining * 2);
+  maisyShouldStopTalkingMillis = millis() + maisyTalkTime;
 }
 
 // some poke lines have special effects - this function manages that
@@ -68,5 +76,19 @@ void checkForSpecialPokeText(int l) {
         it.remove();
       }
     }
+  }
+}
+
+// if a maisy monologue line starts with {x}, temporarily set the text size to regular * x
+void setMaisyTextSize() {
+  if (maisyTalkingText.startsWith("{")) {
+    int endIndex = maisyTalkingText.indexOf("}");
+    if (endIndex != -1) {
+      String numberStr = maisyTalkingText.substring(1, endIndex);
+      maisyTextSize = defaultMaisyTextSize * Float.parseFloat(numberStr);
+      maisyTalkingText = maisyTalkingText.substring(endIndex + 1);
+    }
+  } else {
+    maisyTextSize = defaultMaisyTextSize;
   }
 }

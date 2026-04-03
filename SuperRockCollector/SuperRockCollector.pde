@@ -10,6 +10,7 @@ import processing.sound.*;
 void setup() {  
   size(800, 800);
   frameRate(30);
+  loaded = false;
   
   loadLoadingSpinner();
   
