@@ -137,3 +137,18 @@ Rock rockFromData(String line) {
 
   return r;
 }
+
+void attachAutoSave() {
+  // Get the underlying Java window and attach a listener that saves on close
+  java.awt.Frame frame = ( (processing.awt.PSurfaceAWT.SmoothCanvas) surface.getNative() ).getFrame();
+  
+  frame.addWindowListener(new java.awt.event.WindowAdapter() {
+    @Override
+    public void windowClosing(java.awt.event.WindowEvent e) {
+      saveData();
+      // Let Processing handle the actual exit
+      frame.dispose();
+      System.exit(0);
+    }
+  });
+}

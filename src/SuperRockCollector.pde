@@ -22,6 +22,9 @@ void setup() {
   
   rocks = new ArrayList<Rock>();
   
+  // Automatically save when the window is closed
+  attachAutoSave();
+  
   loadData();
 }
 
