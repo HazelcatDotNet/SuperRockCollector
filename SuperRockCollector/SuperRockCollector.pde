@@ -45,8 +45,15 @@ void draw() {
   
   } else {
     displayLoadingScreen();
-    if (millis() >= loadEndTime) loaded = true;
+    if (millis() >= loadEndTime) {
+      onGameLoad();
+    }
   }
+}
+
+void onGameLoad() {
+  loaded = true;
+  startSoundLoop(mainThemeSong);
 }
 
 void mousePressed() {

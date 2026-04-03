@@ -123,3 +123,7 @@ void displayLoadingScreen() {
   
   loadingSpinnerAngle += 0.1;
 }
+
+void startSoundLoop(SoundFile sound) {
+  sound.loop();
+}

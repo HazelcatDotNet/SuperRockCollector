@@ -13,6 +13,9 @@ SoundFile maisyTalkSound;
 
 PImage loadingSpinner;
 
+// music
+SoundFile mainThemeSong;
+
 void loadLoadingSpinner() {
   loadingSpinner = loadImage(dataPath("art/loading-spinner.png"));
 }
@@ -20,6 +23,10 @@ void loadLoadingSpinner() {
 void loadSounds() {
   maisyTalkSound = new SoundFile(this, dataPath("sfx/maisy-talk.wav"));
   rockPopSound = new SoundFile(this, dataPath("sfx/rock-pop.wav"));
+  
+  // songs
+  mainThemeSong = new SoundFile(this, dataPath("sfx/time-to-collect!.wav"));
+  
 }
 
 void loadUiImages() {
