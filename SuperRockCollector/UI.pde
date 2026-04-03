@@ -22,14 +22,14 @@ void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgS
 
 void drawMaisy() {
   imageMode(CENTER);
-  animateDrawing(maisy1, maisy2, screenSize / 2, corner / 2, corner, corner, 500);
+  animateDrawing(maisy1, maisy2, width / 2, corner / 2, corner, corner, 500);
   
   drawMaisyText();
 }
 
 void drawMaisySpeechBubble() {
   imageMode(CENTER);
-  float speechBubbleX = screenSize * (3.08 / 4.0);
+  float speechBubbleX = width * (3.08 / 4.0);
   float speechBubbleY = corner / 2;
   float speechBubbleWidth = corner * 2.7;
   float speechBubbleHeight = corner * 0.9;
@@ -65,7 +65,7 @@ void drawMaisyText() {
     // draw the monologue text
     textSize(corner / 5);
     String wrappedText = wrapText(maisyTalkingText, maisyTextLineCharLimit);
-    text(wrappedText, screenSize / 1.6, corner / 3.25);
+    text(wrappedText, width / 1.6, corner / 3.25);
   }
 }
 
@@ -79,7 +79,7 @@ void loadRockImages() {
 
 // used for debugging
 void drawMaisyHexagonHitbox() {
-  float centerX = screenSize / 2;
+  float centerX = width / 2;
   float centerY = corner / 2;
   float radius = corner / 2;
 
@@ -126,4 +126,10 @@ void displayLoadingScreen() {
 
 void startSoundLoop(SoundFile sound) {
   sound.loop();
+}
+
+void calculateScreenAreas() {
+  corner = width / 5.94;
+  farmCenter = (corner + width) / 2;
+  loaded = false;
 }

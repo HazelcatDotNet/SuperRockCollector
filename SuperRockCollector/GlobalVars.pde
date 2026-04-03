@@ -1,4 +1,6 @@
 int framerate = 30;
+int oldScreenSize;
+int newScreenSize;
 boolean loaded;
 float loadingSpinnerAngle = random(TWO_PI);
 int loadEndTime;
@@ -23,7 +25,6 @@ int maisyShouldStopTalkingMillis;
 
 float corner;
 float farmCenter;
-float screenSize;
 
 // to add a new rock type: add file name to both this list and the Rock class
 String[] rockFileNames = { "standard" };

@@ -1,6 +1,6 @@
 // returns whether or not the mouse is on the maisy box
 boolean mouseOnMaisy() {
-  float centerX = screenSize / 2;
+  float centerX = width / 2;
   float centerY = corner / 2;
   float radius = corner / 2;
 

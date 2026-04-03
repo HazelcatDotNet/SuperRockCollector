@@ -80,9 +80,9 @@ public class Rock {
   
   void chooseDest() {
     int leftBound = int(corner + sizeX);
-    int rightBound = int(screenSize - sizeX);
+    int rightBound = int(width - sizeX);
     int upBound = int(corner + sizeY);
-    int downBound = int(screenSize - sizeY);
+    int downBound = int(width - sizeY);
     
     int destX = random.nextInt(leftBound, rightBound);
     int destY = random.nextInt(upBound, downBound);
@@ -105,7 +105,7 @@ public class Rock {
   }
   
   void setId() {
-    id = random.ints(10, 'a', 'z' + 1)
+    id = random.ints(12, '0', '9' + 1)
       .collect(StringBuilder::new,
         StringBuilder::appendCodePoint,
         StringBuilder::append)

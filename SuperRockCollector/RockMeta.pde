@@ -15,7 +15,9 @@ void incrementRocks() {
 
 // runs whenever the mouse is clicked
 void checkForRockClicks() {
-  for (int i = 0; i < rocks.size(); i++) {
+  
+  // loop backwards so rocks on top are clicked first
+  for (int i = rocks.size() - 1; i >= 0; i--) {
     Rock rock = rocks.get(i);
     if (rock.mouseOnRock()) {
       rocks.remove(i);
@@ -24,6 +26,9 @@ void checkForRockClicks() {
       if (rock.shouldDestroyOnClick()) {
         rock = null;
       }
+      
+      // return after the rock click, because only one rock can be clicked per click
+      return;
     }
   }
 }
@@ -38,8 +43,8 @@ void attemptToSpawnRocks() {
 void spawnRock() {
   Rock rock = new StandardRock();
   
-  float locX = random.nextInt(int(corner), int(screenSize));
-  float locY = random.nextInt(int(corner), int(screenSize));
+  float locX = random.nextInt(int(corner), int(width));
+  float locY = random.nextInt(int(corner), int(width));
   rock.setLocation(locX, locY);
   
   rocks.add(rock);

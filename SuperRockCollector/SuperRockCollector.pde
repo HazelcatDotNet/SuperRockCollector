@@ -10,10 +10,6 @@ import processing.sound.*;
 void setup() {  
   size(800, 800);
   frameRate(framerate);
-  screenSize = 800;
-  corner = screenSize / 5.94;
-  farmCenter = (corner + screenSize) / 2;
-  loaded = false;
   
   loadLoadingSpinner();
   
@@ -23,12 +19,11 @@ void setup() {
   loadUiImages();
   loadRockImages();
   
-  rocks = new ArrayList<Rock>();
-  
   // Automatically save when the window is closed
   attachAutoSave();
   
   loadData();
+  
   loadEndTime = millis() + 1500;
 }
 

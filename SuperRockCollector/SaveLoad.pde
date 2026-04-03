@@ -33,6 +33,8 @@ void saveData() {
   // ---- simple variables ----
   lines.add("[vars]");
   lines.add("totalRocks=" + totalRocks);
+  lines.add("oldScreenSize=" + width);
+  lines.add("newScreenSize=" + newScreenSize);
   // add future simple variables here, e.g.:
   //   lines.add("coins=" + coins);
   lines.add("[/vars]");
@@ -55,6 +57,8 @@ void saveData() {
 void loadData() {
   // Initialise defaults so the game works even without a save file
   totalRocks = 0;
+  oldScreenSize = 800;
+  newScreenSize = 800;
   rocks      = new ArrayList<Rock>();
 
   String[] lines = loadStrings(dataPath(SAVE_NAME));
@@ -87,8 +91,18 @@ void loadData() {
       String value = parts[1];
 
       if (key.equals("totalRocks")) totalRocks = Long.parseLong(value);
+      else if (key.equals("oldScreenSize")) oldScreenSize = int(value);
+      else if (key.equals("newScreenSize")) {
+        newScreenSize = int(value);
+        if (newScreenSize != oldScreenSize) {
+          windowResize(newScreenSize, newScreenSize);
+        }
+      }
       // add future simple variables here, e.g.:
       //   else if (key.equals("coins")) coins = int(value);
+      
+      // BEFORE LOADING ROCKS, calculate screen areas (e.g. corner, farm center, etc.)
+      calculateScreenAreas();
 
     } else if (currentSection.equals("rocks")) {
       try {
@@ -122,8 +136,10 @@ Rock rockFromData(String line) {
   r.rockType     = RockType.valueOf(p[1]);
   r.rockFileName = p[2];
 
-  r.loc  = new PVector(float(p[3]), float(p[4]));
-  r.dest = new PVector(float(p[5]), float(p[6]));
+  // scale location and destination, in case the screen size changed
+  float scale = float(newScreenSize) / float(oldScreenSize);
+  r.loc  = new PVector(float(p[3]) * scale, float(p[4]) * scale);
+  r.dest = new PVector(float(p[5]) * scale, float(p[6]) * scale);
 
   r.speed = float(p[7]);
   r.sizeX = float(p[8]);
