@@ -1,4 +1,7 @@
 int framerate = 30;
+boolean loaded;
+float loadingSpinnerAngle = random(TWO_PI);
+int loadEndTime;
 
 int lastXinYCheck = 0;
 int lastMaisySwitch = 0;

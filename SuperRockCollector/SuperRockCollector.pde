@@ -13,6 +13,9 @@ void setup() {
   screenSize = 800;
   corner = screenSize / 5.94;
   farmCenter = (corner + screenSize) / 2;
+  loaded = false;
+  
+  loadLoadingSpinner();
   
   maisyPokeLines = loadStrings(dataPath("maisy-poke-lines.txt"));
   maisyLastNames = loadStrings(dataPath("maisy-last-names.txt"));
@@ -26,14 +29,24 @@ void setup() {
   attachAutoSave();
   
   loadData();
+  loadEndTime = millis() + 1500;
 }
 
 void draw() {
-  drawUi();
+  background(255);
   
-  incrementRocks();
-  attemptToSpawnRocks();
-  //drawMaisyHexagonHitbox();
+  if (loaded) {
+  
+    drawUi();
+    
+    incrementRocks();
+    attemptToSpawnRocks();
+    //drawMaisyHexagonHitbox();
+  
+  } else {
+    displayLoadingScreen();
+    if (millis() >= loadEndTime) loaded = true;
+  }
 }
 
 void mousePressed() {

@@ -112,3 +112,14 @@ String wrapText(String text, int maxCharCount) {
 
   return result;
 }
+
+void displayLoadingScreen() {
+  pushMatrix();
+    translate(width/2, height/2);
+    rotate(loadingSpinnerAngle);
+    imageMode(CENTER);
+    image(loadingSpinner, 0, 0, corner * 0.7, corner * 0.7);
+  popMatrix();
+  
+  loadingSpinnerAngle += 0.1;
+}
