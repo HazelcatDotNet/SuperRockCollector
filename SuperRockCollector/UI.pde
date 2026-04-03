@@ -135,3 +135,7 @@ void calculateScreenAreas() {
   defaultMaisyTextSize = corner / 5;
   maisyTextSize = defaultMaisyTextSize;
 }
+
+void setDrawOpacity(int opacity) {
+  tint(255, opacity);
+}

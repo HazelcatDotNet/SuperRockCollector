@@ -36,12 +36,39 @@ void checkForRockClicks() {
 // runs every frame
 void attemptToSpawnRocks() {
   if (rocks.size() < rocksOnScreenLimit && xChanceInYSeconds(1, 3)) {
-    spawnRock();
+    spawnRock(rollRockType());
   }
 }
 
-void spawnRock() {
-  Rock rock = new StandardRock();
+// decide what rock type to spawn (weighted)
+RockType rollRockType() {
+  int[] weights  = { 5,                  1            };
+  RockType[] types = { RockType.STANDARD, RockType.LIZARD };
+  
+  int total = 0;
+  for (int w : weights) total += w;
+  
+  int roll = random.nextInt(total);
+  int cumulative = 0;
+  for (int i = 0; i < weights.length; i++) {
+    cumulative += weights[i];
+    if (roll < cumulative) return types[i];
+  }
+  
+  return types[0]; // fallback, should never reach here
+}
+
+void spawnRock(RockType rockType) {
+  
+  Rock rock;
+  switch (rockType) {
+    case LIZARD:
+      rock = new LizardRock();
+      break;
+    default:
+      rock = new StandardRock();
+      break;
+  }
   
   float locX = random.nextInt(int(corner), int(width));
   float locY = random.nextInt(int(corner), int(width));
@@ -52,6 +79,6 @@ void spawnRock() {
 
 void spawnXRocks(int x) {
   for (int i = 0; i < x; i++) {
-    spawnRock();
+    spawnRock(RockType.STANDARD);
   }
 }

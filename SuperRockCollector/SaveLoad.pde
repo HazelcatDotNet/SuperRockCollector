@@ -138,7 +138,7 @@ Rock rockFromData(String line) {
     );
   }
 
-  Rock r = new Rock();
+  Rock r = newRockOfType(RockType.valueOf(p[1]));
 
   r.id           = p[0];
   r.rockType     = RockType.valueOf(p[1]);
@@ -175,4 +175,11 @@ void attachAutoSave() {
       System.exit(0);
     }
   });
+}
+
+Rock newRockOfType(RockType rockType) {
+  switch (rockType) {
+    case LIZARD: return new LizardRock();
+    default:     return new StandardRock();
+  }
 }

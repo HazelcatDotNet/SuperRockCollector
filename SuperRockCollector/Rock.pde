@@ -35,9 +35,14 @@ public class Rock {
   
   void display() {
     rectMode(CENTER);
-    //square(locX, locY, size);
     imageMode(CENTER);
+    setRockOpacity();
     image(img, loc.x, loc.y, sizeX, sizeY);
+    setDrawOpacity(255);
+  }
+  
+  void setRockOpacity() {
+    setDrawOpacity(255);
   }
   
   // move the rock, bouncing it off walls if necessary
@@ -91,6 +96,10 @@ public class Rock {
   
   int onClick() {
     playSound();
+    return rocksCollectedUponClick();
+  }
+  
+  int rocksCollectedUponClick() {
     return 1;
   }
   
