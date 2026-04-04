@@ -23,57 +23,6 @@ void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgS
   image(imgToDraw, imgX, imgY, imgSizeX, imgSizeY);
 }
 
-void drawMaisy() {
-  imageMode(CENTER);
-  animateDrawing(maisy1, maisy2, width / 2, corner / 2, corner, corner, 500);
-  
-  drawMaisyText();
-}
-
-void drawMaisySpeechBubble() {
-  imageMode(CENTER);
-  float speechBubbleX = width * (3.08 / 4.0);
-  float speechBubbleY = corner / 2;
-  float speechBubbleWidth = corner * 2.7;
-  float speechBubbleHeight = corner * 0.9;
-  animateDrawing(maisySpeechBubble1, maisySpeechBubble2, speechBubbleX, speechBubbleY, speechBubbleWidth, speechBubbleHeight, 250);
-}
-
-// draws maisy's speech bubble, and the text inside it, if she is talking. also makes the noises :)
-void drawMaisyText() {
-  if (maisyIsTalking) {
-    
-    // check if it's time for maisy to stop talking
-    if (millis() >= maisyShouldStopTalkingMillis) {
-      
-      // if maisy is done talking, set maisyIsTalking = false
-      if (maisyTalkingTextLines.isEmpty()) {
-        maisyIsTalking = false;
-        
-        // and if maisy still has more lines in her monologue
-      } else {
-        getNextMaisyLine(-1);
-      }
-      
-    }
-    
-    drawMaisySpeechBubble();
-    
-    // make the maisy noises while she talks
-    if (maisySoundsRemaining > 0 && intervalMs(maisyTalkSoundMsInterval)) {
-      maisyTalkSound.play();
-      maisySoundsRemaining--;
-    }
-    
-    // draw the monologue text
-    textSize(maisyTextSize);
-    float scaler = defaultMaisyTextSize / maisyTextSize;
-    String wrappedText = wrapText(maisyTalkingText, floor(maisyTextLineCharLimit * scaler));
-    textAlign(LEFT, BASELINE);
-    text(wrappedText, width / 1.6, corner / 3.25);
-  }
-}
-
 void loadRockImages() {
   for (int i = 0; i < rockFileNames.length; i++) {
     String rockFileName = rockFileNames[i];
@@ -120,18 +69,6 @@ void checkForLeftSideIconClicks() {
 
 void openUpgradesMenu() {
   println("Opening upgrades menu...");
-}
-
-// used for debugging
-void drawMaisyHexagonHitbox() {
-  float centerX = width / 2;
-  float centerY = corner / 2;
-  float radius = corner / 2;
-
-  noFill();
-  stroke(255, 0, 0); // red outline
-  strokeWeight(2);
-  ellipse(centerX, centerY, radius * 2, radius * 2);
 }
 
 String wrapText(String text, int maxCharCount) {

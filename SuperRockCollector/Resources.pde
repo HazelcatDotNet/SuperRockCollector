@@ -35,7 +35,8 @@ void loadSounds() {
 }
 
 void loadUiImages() {
-  background = requestImage(dataPath("art/background.png"));
+  background = requestImage(dataPath("art/background-wood-grain.png"));
+
   maisy1 = requestImage(dataPath("art/maisy-1.png"));
   maisy2 = requestImage(dataPath("art/maisy-2.png"));
   maisySpeechBubble1 = requestImage(dataPath("art/maisy-speech-bubble-1.png"));
