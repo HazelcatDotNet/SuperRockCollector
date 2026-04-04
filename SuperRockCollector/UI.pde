@@ -7,10 +7,10 @@ void drawUi() {
   drawMaisy();
 
   textSize(corner / 3);
-  textAlign(LEFT);
-  String totalRocksText = int(totalRocks) + "\nrocks";
+  String totalRocksText = int(totalRocks) + " rocks";
   fill(0, 0, 0);
-  text(totalRocksText, corner / 3, corner / 3);
+  textAlign(LEFT, BASELINE);
+  text(totalRocksText, corner / 6, corner / 2.5);
   
   drawLeftSideIcons();
 }
@@ -69,6 +69,7 @@ void drawMaisyText() {
     textSize(maisyTextSize);
     float scaler = defaultMaisyTextSize / maisyTextSize;
     String wrappedText = wrapText(maisyTalkingText, floor(maisyTextLineCharLimit * scaler));
+    textAlign(LEFT, BASELINE);
     text(wrappedText, width / 1.6, corner / 3.25);
   }
 }
