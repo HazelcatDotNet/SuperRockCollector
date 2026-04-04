@@ -98,7 +98,7 @@ void drawLeftSideIcons() {
   float iconsX = iconsX();
   float upgradesButtonY = upgradesButtonY();
   float upgradesButtonSize = upgradesButtonSize();
-  image(upgradesButton, iconsX, upgradesButtonY, upgradesButtonSize, upgradesButtonSize);
+  animateDrawing(upgradesButton1, upgradesButton2, iconsX, upgradesButtonY, upgradesButtonSize, upgradesButtonSize, 500);
   textSize(leftSideIconsTextSize);
   textAlign(CENTER, CENTER);
   text("upgrades", iconsX, upgradesButtonY + upgradesButtonSize / 2 + leftSideIconsTextSize / 2);

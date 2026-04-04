@@ -18,7 +18,8 @@ SoundFile mainThemeSong;
 
 // left-side icons
 float leftSideIconsTextSize;
-PImage upgradesButton;
+PImage upgradesButton1;
+PImage upgradesButton2;
 
 void loadLoadingSpinner() {
   loadingSpinner = loadImage(dataPath("art/loading-spinner.png"));
@@ -40,5 +41,6 @@ void loadUiImages() {
   maisySpeechBubble1 = requestImage(dataPath("art/maisy-speech-bubble-1.png"));
   maisySpeechBubble2 = requestImage(dataPath("art/maisy-speech-bubble-2.png"));
 
-  upgradesButton = requestImage(dataPath("art/upgrades.png"));
+  upgradesButton1 = requestImage(dataPath("art/upgrades-1.png"));
+  upgradesButton2 = requestImage(dataPath("art/upgrades-2.png"));
 }

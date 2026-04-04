@@ -171,9 +171,7 @@ void attachAutoSave() {
     public void windowClosing(java.awt.event.WindowEvent e) {
       saveData();
       noLoop(); // stop the draw loop before disposing
-      // Let Processing handle the actual exit
-      frame.dispose();
-      System.exit(0);
+      System.exit(0); // exit immediately without manual frame disposal
     }
   });
 }
