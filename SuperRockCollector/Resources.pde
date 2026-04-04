@@ -17,7 +17,6 @@ PImage loadingSpinner;
 SoundFile mainThemeSong;
 
 // left-side icons
-float leftSideIconsTextSize;
 PImage upgradesButton1;
 PImage upgradesButton2;
 

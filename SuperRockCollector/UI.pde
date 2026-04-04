@@ -1,4 +1,12 @@
-boolean menuOpen = false;
+public enum Menu {
+  NONE,
+  UPGRADES;
+}
+
+Menu menuOpen = Menu.NONE;
+float menuSize;
+
+float leftSideIconsTextSize;
 
 void drawUi() {
   imageMode(CORNER);
@@ -13,6 +21,30 @@ void drawUi() {
   text(totalRocksText, corner / 6, corner / 2.5);
   
   drawLeftSideIcons();
+  drawMenu();
+}
+
+void drawMenu() {
+  switch(menuOpen) {
+    case NONE:
+      break;
+    case UPGRADES:
+      drawUpgradesMenu();
+      break;
+    default:
+      throw new IllegalStateException("Unexpected value: " + menuOpen);
+  }
+}
+
+void drawUpgradesMenu() {
+  fill(255, 255, 255);
+  rectMode(CENTER);
+  rect(farmCenter, farmCenter, menuSize, menuSize);
+  
+  textSize(corner / 4);
+  fill(0, 0, 0);
+  textAlign(CENTER, TOP);
+  text("upgrades coming soon!", width / 2, height / 3);
 }
 
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
@@ -68,7 +100,7 @@ void checkForLeftSideIconClicks() {
 }
 
 void openUpgradesMenu() {
-  println("Opening upgrades menu...");
+  menuOpen = Menu.UPGRADES;
 }
 
 String wrapText(String text, int maxCharCount) {
@@ -116,6 +148,7 @@ void calculateScreenAreas() {
   defaultMaisyTextSize = corner / 5;
   maisyTextSize = defaultMaisyTextSize;
   leftSideIconsTextSize = corner / 5;
+  menuSize = width * 0.75;
 }
 
 void setDrawOpacity(int opacity) {

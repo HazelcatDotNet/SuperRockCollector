@@ -32,11 +32,10 @@ void draw() {
   background(255);
   
   if (loaded) {
-  
-    drawUi();
-    
     incrementRocks();
     attemptToSpawnRocks();
+
+    drawUi();
     //drawMaisyHexagonHitbox();
   
   } else {
@@ -53,7 +52,7 @@ void onGameLoad() {
 }
 
 void mousePressed() {
-  if (!menuOpen) {
+  if (menuOpen == Menu.NONE) {
     checkForRockClicks();
     checkForMaisyClick();
     checkForLeftSideIconClicks();
