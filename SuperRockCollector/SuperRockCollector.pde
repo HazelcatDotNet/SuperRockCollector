@@ -53,8 +53,11 @@ void onGameLoad() {
 }
 
 void mousePressed() {
-  checkForRockClicks();
-  checkForMaisyClick();
+  if (!menuOpen) {
+    checkForRockClicks();
+    checkForMaisyClick();
+    checkForLeftSideIconClicks();
+  }
 }
 
 void keyPressed() {

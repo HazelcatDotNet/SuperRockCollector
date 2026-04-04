@@ -1,3 +1,5 @@
+boolean menuOpen = false;
+
 void drawUi() {
   imageMode(CORNER);
   image(background, 0, 0, width, height);
@@ -9,7 +11,8 @@ void drawUi() {
   String totalRocksText = int(totalRocks) + "\nrocks";
   fill(0, 0, 0);
   text(totalRocksText, corner / 3, corner / 3);
-  // circle(corner, corner, 5);
+  
+  drawLeftSideIcons();
 }
 
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
@@ -78,6 +81,46 @@ void loadRockImages() {
   }
 }
 
+float upgradesButtonY() {
+  return corner + corner / 2;
+}
+
+float upgradesButtonSize() {
+  return corner * 0.8;
+}
+
+float iconsX() {
+  return corner / 2;
+}
+
+void drawLeftSideIcons() {
+  imageMode(CENTER);
+  float iconsX = iconsX();
+  float upgradesButtonY = upgradesButtonY();
+  float upgradesButtonSize = upgradesButtonSize();
+  image(upgradesButton, iconsX, upgradesButtonY, upgradesButtonSize, upgradesButtonSize);
+  textSize(leftSideIconsTextSize);
+  textAlign(CENTER, CENTER);
+  text("upgrades", iconsX, upgradesButtonY + upgradesButtonSize / 2 + leftSideIconsTextSize / 2);
+}
+
+void checkForLeftSideIconClicks() {
+  float iconsX = iconsX();
+  float upgradesButtonY = upgradesButtonY();
+  float upgradesButtonSize = upgradesButtonSize();
+  
+  // Check if the click is within the upgrades button area
+  float halfUpgradesButtonSize = upgradesButtonSize / 2;
+  if (mouseX >= iconsX - halfUpgradesButtonSize && mouseX <= iconsX + halfUpgradesButtonSize &&
+      mouseY >= upgradesButtonY - halfUpgradesButtonSize && mouseY <= upgradesButtonY + halfUpgradesButtonSize) {
+        openUpgradesMenu();
+  }
+}
+
+void openUpgradesMenu() {
+  println("Opening upgrades menu...");
+}
+
 // used for debugging
 void drawMaisyHexagonHitbox() {
   float centerX = width / 2;
@@ -134,6 +177,7 @@ void calculateScreenAreas() {
   farmCenter = (corner + width) / 2;
   defaultMaisyTextSize = corner / 5;
   maisyTextSize = defaultMaisyTextSize;
+  leftSideIconsTextSize = corner / 5;
 }
 
 void setDrawOpacity(int opacity) {
