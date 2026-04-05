@@ -59,7 +59,6 @@ RockType rollRockType() {
 }
 
 void spawnRock(RockType rockType) {
-  
   Rock rock;
   switch (rockType) {
     case LIZARD:

@@ -8,7 +8,7 @@ float menuSize;
 
 float leftSideIconsTextSize;
 
-void drawUi() {
+void drawBackgroundUi() {
   imageMode(CORNER);
   image(background, 0, 0, width, height);
 
@@ -21,6 +21,9 @@ void drawUi() {
   text(totalRocksText, corner / 6, corner / 2.5);
   
   drawLeftSideIcons();
+}
+
+void drawForegroundUi() {
   drawMenu();
 }
 

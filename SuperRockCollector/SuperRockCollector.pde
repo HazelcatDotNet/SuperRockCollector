@@ -32,12 +32,11 @@ void draw() {
   background(255);
   
   if (loaded) {
+    drawBackgroundUi();
     incrementRocks();
+    drawForegroundUi();
     attemptToSpawnRocks();
-
-    drawUi();
     //drawMaisyHexagonHitbox();
-  
   } else {
     displayLoadingScreen();
     if (millis() >= loadEndTime) {
