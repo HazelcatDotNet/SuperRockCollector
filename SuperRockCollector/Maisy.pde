@@ -1,10 +1,9 @@
 // returns whether or not the mouse is on the maisy box
 boolean mouseOnMaisy() {
-  float centerX = width / 2;
-  float centerY = corner / 2;
-  float radius = corner / 2;
+  float centerY = halfCorner;
+  float radius = halfCorner;
 
-  if (dist(mouseX, mouseY, centerX, centerY) <= radius) {
+  if (dist(mouseX, mouseY, screenCenter, centerY) <= radius) {
     return true;
   }
 
@@ -17,7 +16,7 @@ void checkForMaisyClick() {
     maisyIsTalking = true;
     
     int index = int(random(maisyPokeLines.length));
-    //index = 34 - 1; // defined line number for debugging
+    //index = 31 - 1; // defined line number for debugging
     
     maisyTalkingTextLines = new ArrayList<String>(Arrays.asList(maisyPokeLines[index].split(" / ")));
     getNextMaisyLine(index + 1);
@@ -95,7 +94,7 @@ void setMaisyTextSize() {
 
 void drawMaisy() {
   imageMode(CENTER);
-  animateDrawing(maisy1, maisy2, width / 2, corner / 2, corner, corner, 500);
+  animateDrawing(maisy1, maisy2, screenCenter, halfCorner, corner, corner, 500);
   
   drawMaisyText();
 }
@@ -103,7 +102,7 @@ void drawMaisy() {
 void drawMaisySpeechBubble() {
   imageMode(CENTER);
   float speechBubbleX = width * (3.08 / 4.0);
-  float speechBubbleY = corner / 2;
+  float speechBubbleY = halfCorner;
   float speechBubbleWidth = corner * 2.7;
   float speechBubbleHeight = corner * 0.9;
   animateDrawing(maisySpeechBubble1, maisySpeechBubble2, speechBubbleX, speechBubbleY, speechBubbleWidth, speechBubbleHeight, 250);
@@ -146,12 +145,11 @@ void drawMaisyText() {
 
 // used for debugging
 void drawMaisyHexagonHitbox() {
-  float centerX = width / 2;
-  float centerY = corner / 2;
-  float radius = corner / 2;
+  float centerY = halfCorner;
+  float radius = halfCorner;
 
   noFill();
   stroke(255, 0, 0); // red outline
   strokeWeight(2);
-  ellipse(centerX, centerY, radius * 2, radius * 2);
+  ellipse(screenCenter, centerY, radius * 2, radius * 2);
 }

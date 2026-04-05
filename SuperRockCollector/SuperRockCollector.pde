@@ -29,11 +29,12 @@ void setup() {
 }
 
 void draw() {
-  background(255);
-  
   if (loaded) {
-    drawBackgroundUi();
-    incrementRocks();
+    // display background & increment rocks if menu is closed or animation is in progress
+    if (menuOpen == Menu.NONE || menuOpeningAnimationInProgress) {
+      drawBackgroundUi();
+      incrementRocks();
+    }
     drawForegroundUi();
     attemptToSpawnRocks();
     //drawMaisyHexagonHitbox();
@@ -55,6 +56,8 @@ void mousePressed() {
     checkForRockClicks();
     checkForMaisyClick();
     checkForLeftSideIconClicks();
+  } else {
+    checkForMenuClicks();
   }
 }
 

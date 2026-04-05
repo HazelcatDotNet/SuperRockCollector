@@ -4,11 +4,24 @@ public enum Menu {
 }
 
 Menu menuOpen = Menu.NONE;
-float menuSize;
+boolean menuOpeningAnimationInProgress = false;
+float currentMenuSize = 0;
+float maxMenuSize;
 
 float leftSideIconsTextSize;
 
+float corner;
+float farmCenter;
+float screenCenter;
+float halfCorner;
+
+float menuTopRightCornerX;
+float menuTopRightCornerY;
+float menuXOutButtonSize;
+
 void drawBackgroundUi() {
+  background(255);
+
   imageMode(CORNER);
   image(background, 0, 0, width, height);
 
@@ -40,14 +53,41 @@ void drawMenu() {
 }
 
 void drawUpgradesMenu() {
-  fill(255, 255, 255);
-  rectMode(CENTER);
-  rect(farmCenter, farmCenter, menuSize, menuSize);
-  
+  // increase menu size if we're in the middle of the opening animation
+  if (menuOpeningAnimationInProgress) {
+    currentMenuSize += (frameRate * 4);
+    if (currentMenuSize >= maxMenuSize) {
+      currentMenuSize = maxMenuSize;
+      menuOpeningAnimationInProgress = false;
+    }
+  }
+
+  imageMode(CENTER);
+  image(menuBackground, screenCenter, screenCenter, currentMenuSize, currentMenuSize);
+
+  if (menuOpeningAnimationInProgress) return; // don't draw menu text until the menu is fully open
+
+  image(menuXOutButton, menuTopRightCornerX, menuTopRightCornerY, menuXOutButtonSize, menuXOutButtonSize);
   textSize(corner / 4);
   fill(0, 0, 0);
   textAlign(CENTER, TOP);
-  text("upgrades coming soon!", width / 2, height / 3);
+  text("upgrades coming soon!", screenCenter, height / 3);
+}
+
+void checkForMenuClicks() {
+  if (menuOpen == Menu.UPGRADES) {
+    // Check if the click is within the X-out button area
+    if (mouseX >= menuTopRightCornerX - (menuXOutButtonSize / 2) && mouseX <= menuTopRightCornerX + (menuXOutButtonSize / 2) &&
+        mouseY >= menuTopRightCornerY - (menuXOutButtonSize / 2) && mouseY <= menuTopRightCornerY + (menuXOutButtonSize / 2)) {
+          closeMenu();
+    }
+  }
+}
+
+void closeMenu() {
+  menuOpen = Menu.NONE;
+  menuOpeningAnimationInProgress = false;
+  currentMenuSize = 0;
 }
 
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
@@ -67,7 +107,7 @@ void loadRockImages() {
 }
 
 float upgradesButtonY() {
-  return corner + corner / 2;
+  return corner + halfCorner;
 }
 
 float upgradesButtonSize() {
@@ -75,7 +115,7 @@ float upgradesButtonSize() {
 }
 
 float iconsX() {
-  return corner / 2;
+  return halfCorner;
 }
 
 void drawLeftSideIcons() {
@@ -86,7 +126,7 @@ void drawLeftSideIcons() {
   animateDrawing(upgradesButton1, upgradesButton2, iconsX, upgradesButtonY, upgradesButtonSize, upgradesButtonSize, 500);
   textSize(leftSideIconsTextSize);
   textAlign(CENTER, CENTER);
-  text("upgrades", iconsX, upgradesButtonY + upgradesButtonSize / 2 + leftSideIconsTextSize / 2);
+  text("upgrades", iconsX, upgradesButtonY + (upgradesButtonSize / 2) + (leftSideIconsTextSize / 2));
 }
 
 void checkForLeftSideIconClicks() {
@@ -104,6 +144,7 @@ void checkForLeftSideIconClicks() {
 
 void openUpgradesMenu() {
   menuOpen = Menu.UPGRADES;
+  menuOpeningAnimationInProgress = true;
 }
 
 String wrapText(String text, int maxCharCount) {
@@ -131,6 +172,8 @@ String wrapText(String text, int maxCharCount) {
 }
 
 void displayLoadingScreen() {
+  background(255);
+
   pushMatrix();
     translate(width/2, height/2);
     rotate(loadingSpinnerAngle);
@@ -147,11 +190,17 @@ void startSoundLoop(SoundFile sound) {
 
 void calculateScreenAreas() {
   corner = width / 5.94;
+  halfCorner = corner / 2;
+  screenCenter = width / 2;
   farmCenter = (corner + width) / 2;
   defaultMaisyTextSize = corner / 5;
   maisyTextSize = defaultMaisyTextSize;
   leftSideIconsTextSize = corner / 5;
-  menuSize = width * 0.75;
+  maxMenuSize = width * 0.9;
+  
+  menuTopRightCornerX = screenCenter + (maxMenuSize / 2) - (halfCorner / 4);
+  menuTopRightCornerY = screenCenter - (maxMenuSize / 2) + (halfCorner / 4);
+  menuXOutButtonSize = corner / 2.5;
 }
 
 void setDrawOpacity(int opacity) {

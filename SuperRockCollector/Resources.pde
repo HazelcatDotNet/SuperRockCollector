@@ -16,6 +16,9 @@ PImage loadingSpinner;
 // music
 SoundFile mainThemeSong;
 
+PImage menuBackground;
+PImage menuXOutButton;
+
 // left-side icons
 PImage upgradesButton1;
 PImage upgradesButton2;
@@ -40,6 +43,9 @@ void loadUiImages() {
   maisy2 = requestImage(dataPath("art/maisy-2.png"));
   maisySpeechBubble1 = requestImage(dataPath("art/maisy-speech-bubble-1.png"));
   maisySpeechBubble2 = requestImage(dataPath("art/maisy-speech-bubble-2.png"));
+
+  menuBackground = requestImage(dataPath("art/menu-background.png"));
+  menuXOutButton = requestImage(dataPath("art/menu-x-out-button.png"));
 
   upgradesButton1 = requestImage(dataPath("art/upgrades-1.png"));
   upgradesButton2 = requestImage(dataPath("art/upgrades-2.png"));

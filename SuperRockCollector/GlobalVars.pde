@@ -23,9 +23,6 @@ int maisyShouldStopTalkingMillis;
 float defaultMaisyTextSize;
 float maisyTextSize;
 
-float corner;
-float farmCenter;
-
 // to add a new rock type: add file name to both this list and the Rock class, and add the rock type to newRockOfType in RockMeta
 String[] rockFileNames = { "standard" };
 

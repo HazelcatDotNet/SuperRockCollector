@@ -8,6 +8,7 @@ void incrementRocks() {
   for (int i = 0; i < rocks.size(); i++) {
     Rock rock = rocks.get(i);
     rock.display();
+
     rock.move();
     rock.waitToMove();
   }
