@@ -36,23 +36,41 @@ void drawBackgroundUi() {
   drawLeftSideIcons();
 }
 
+// anything that's rendered in front of rocks
 void drawForegroundUi() {
-  drawMenu();
+  if (menuOpen != Menu.NONE) {
+    drawMenu();
+  }
 }
 
 void drawMenu() {
+  drawMenuBackground();
+  if (menuOpeningAnimationInProgress) return; // don't draw menu content until the menu is fully open
+
   switch(menuOpen) {
-    case NONE:
-      break;
     case UPGRADES:
       drawUpgradesMenu();
       break;
     default:
       throw new IllegalStateException("Unexpected value: " + menuOpen);
   }
+
+  drawMenuXButton();
 }
 
 void drawUpgradesMenu() {
+  textSize(corner / 4);
+  fill(0, 0, 0);
+  textAlign(CENTER, TOP);
+  text("upgrades coming soon!", screenCenter, height / 3);
+}
+
+void drawMenuXButton() {
+  imageMode(CENTER);
+  image(menuXOutButton, menuTopRightCornerX, menuTopRightCornerY, menuXOutButtonSize, menuXOutButtonSize);
+}
+
+void drawMenuBackground() {
   // increase menu size if we're in the middle of the opening animation
   if (menuOpeningAnimationInProgress) {
     currentMenuSize += (frameRate * 4);
@@ -64,14 +82,6 @@ void drawUpgradesMenu() {
 
   imageMode(CENTER);
   image(menuBackground, screenCenter, screenCenter, currentMenuSize, currentMenuSize);
-
-  if (menuOpeningAnimationInProgress) return; // don't draw menu text until the menu is fully open
-
-  image(menuXOutButton, menuTopRightCornerX, menuTopRightCornerY, menuXOutButtonSize, menuXOutButtonSize);
-  textSize(corner / 4);
-  fill(0, 0, 0);
-  textAlign(CENTER, TOP);
-  text("upgrades coming soon!", screenCenter, height / 3);
 }
 
 void checkForMenuClicks() {

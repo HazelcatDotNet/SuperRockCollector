@@ -56,7 +56,7 @@ void mousePressed() {
     checkForRockClicks();
     checkForMaisyClick();
     checkForLeftSideIconClicks();
-  } else {
+  } else if (!menuOpeningAnimationInProgress) {
     checkForMenuClicks();
   }
 }
