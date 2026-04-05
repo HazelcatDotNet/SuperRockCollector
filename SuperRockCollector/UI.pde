@@ -1,6 +1,7 @@
 public enum Menu {
   NONE,
-  UPGRADES;
+  UPGRADES,
+  SETTINGS;
 }
 
 Menu menuOpen = Menu.NONE;
@@ -9,6 +10,9 @@ float currentMenuSize = 0;
 float maxMenuSize;
 
 float leftSideIconsTextSize;
+float leftSideIconSize;
+float[] leftSideIconYPositions;
+String[] iconOrder = {"upgrades", "settings"};
 
 float corner;
 float farmCenter;
@@ -51,6 +55,9 @@ void drawMenu() {
     case UPGRADES:
       drawUpgradesMenu();
       break;
+    case SETTINGS:
+      drawSettingsMenu();
+      break;
     default:
       throw new IllegalStateException("Unexpected value: " + menuOpen);
   }
@@ -63,6 +70,13 @@ void drawUpgradesMenu() {
   fill(0, 0, 0);
   textAlign(CENTER, TOP);
   text("upgrades coming soon!", screenCenter, height / 3);
+}
+
+void drawSettingsMenu() {
+  textSize(corner / 4);
+  fill(0, 0, 0);
+  textAlign(CENTER, TOP);
+  text("settings coming soon!", screenCenter, height / 3);
 }
 
 void drawMenuXButton() {
@@ -85,7 +99,7 @@ void drawMenuBackground() {
 }
 
 void checkForMenuClicks() {
-  if (menuOpen == Menu.UPGRADES) {
+  if (menuOpen != Menu.NONE) {
     // Check if the click is within the X-out button area
     if (mouseX >= menuTopRightCornerX - (menuXOutButtonSize / 2) && mouseX <= menuTopRightCornerX + (menuXOutButtonSize / 2) &&
         mouseY >= menuTopRightCornerY - (menuXOutButtonSize / 2) && mouseY <= menuTopRightCornerY + (menuXOutButtonSize / 2)) {
@@ -116,12 +130,8 @@ void loadRockImages() {
   }
 }
 
-float upgradesButtonY() {
+float topLeftSideIconY() {
   return corner + halfCorner;
-}
-
-float upgradesButtonSize() {
-  return corner * 0.8;
 }
 
 float iconsX() {
@@ -131,30 +141,53 @@ float iconsX() {
 void drawLeftSideIcons() {
   imageMode(CENTER);
   float iconsX = iconsX();
-  float upgradesButtonY = upgradesButtonY();
-  float upgradesButtonSize = upgradesButtonSize();
-  animateDrawing(upgradesButton1, upgradesButton2, iconsX, upgradesButtonY, upgradesButtonSize, upgradesButtonSize, 500);
+  int animationSpeed = 500; // milliseconds between animation changes
+  
   textSize(leftSideIconsTextSize);
   textAlign(CENTER, CENTER);
-  text("upgrades", iconsX, upgradesButtonY + (upgradesButtonSize / 2) + (leftSideIconsTextSize / 2));
+  
+  for (int i = 0; i < iconOrder.length; i++) {
+    float iconY = leftSideIconYPositions[i];
+    String label = iconOrder[i];
+    
+    // Draw the appropriate button pair
+    switch(label) {
+      case "upgrades":
+        animateDrawing(upgradesButton1, upgradesButton2, iconsX, iconY, leftSideIconSize, leftSideIconSize, animationSpeed);
+        break;
+      case "settings":
+        animateDrawing(settingsButton1, settingsButton2, iconsX, iconY, leftSideIconSize, leftSideIconSize, animationSpeed);
+        break;
+    }
+    
+    // Draw the label
+    text(label, iconsX, iconY + (leftSideIconSize / 2) + (leftSideIconsTextSize / 2));
+  }
 }
 
 void checkForLeftSideIconClicks() {
   float iconsX = iconsX();
-  float upgradesButtonY = upgradesButtonY();
-  float upgradesButtonSize = upgradesButtonSize();
+  float halfIconSize = leftSideIconSize / 2;
   
-  // Check if the click is within the upgrades button area
-  float halfUpgradesButtonSize = upgradesButtonSize / 2;
-  if (mouseX >= iconsX - halfUpgradesButtonSize && mouseX <= iconsX + halfUpgradesButtonSize &&
-      mouseY >= upgradesButtonY - halfUpgradesButtonSize && mouseY <= upgradesButtonY + halfUpgradesButtonSize) {
-        openUpgradesMenu();
-  }
-}
+  for (int i = 0; i < iconOrder.length; i++) {
+    float iconY = leftSideIconYPositions[i];
+    String label = iconOrder[i];
+    
+    if (mouseX >= iconsX - halfIconSize && mouseX <= iconsX + halfIconSize &&
+        mouseY >= iconY - halfIconSize && mouseY <= iconY + halfIconSize) {
+      
+      switch(label) {
+        case "upgrades":
+          menuOpen = Menu.UPGRADES;
+          break;
+        case "settings":
+          menuOpen = Menu.SETTINGS;
+          break;
+      }
 
-void openUpgradesMenu() {
-  menuOpen = Menu.UPGRADES;
-  menuOpeningAnimationInProgress = true;
+      menuOpeningAnimationInProgress = true;
+    }
+  }
 }
 
 String wrapText(String text, int maxCharCount) {
@@ -207,6 +240,14 @@ void calculateScreenAreas() {
   maisyTextSize = defaultMaisyTextSize;
   leftSideIconsTextSize = corner / 5;
   maxMenuSize = width * 0.9;
+  leftSideIconSize = corner * 0.8;
+  
+  // Calculate icon Y positions based on order
+  leftSideIconYPositions = new float[iconOrder.length];
+  float spacing = leftSideIconSize * 1.5;
+  for (int i = 0; i < iconOrder.length; i++) {
+    leftSideIconYPositions[i] = topLeftSideIconY() + (i * spacing);
+  }
   
   menuTopRightCornerX = screenCenter + (maxMenuSize / 2) - (halfCorner / 4);
   menuTopRightCornerY = screenCenter - (maxMenuSize / 2) + (halfCorner / 4);

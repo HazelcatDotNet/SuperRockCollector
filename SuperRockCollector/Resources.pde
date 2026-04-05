@@ -22,6 +22,8 @@ PImage menuXOutButton;
 // left-side icons
 PImage upgradesButton1;
 PImage upgradesButton2;
+PImage settingsButton1;
+PImage settingsButton2;
 
 void loadLoadingSpinner() {
   loadingSpinner = loadImage(dataPath("art/loading-spinner.png"));
@@ -47,6 +49,8 @@ void loadUiImages() {
   menuBackground = requestImage(dataPath("art/menu-background.png"));
   menuXOutButton = requestImage(dataPath("art/menu-x-out-button.png"));
 
-  upgradesButton1 = requestImage(dataPath("art/upgrades-1.png"));
-  upgradesButton2 = requestImage(dataPath("art/upgrades-2.png"));
+  upgradesButton1 = requestImage(dataPath("art/upgrades-icon-1.png"));
+  upgradesButton2 = requestImage(dataPath("art/upgrades-icon-2.png"));
+  settingsButton1 = requestImage(dataPath("art/settings-icon-1.png"));
+  settingsButton2 = requestImage(dataPath("art/settings-icon-2.png"));
 }
