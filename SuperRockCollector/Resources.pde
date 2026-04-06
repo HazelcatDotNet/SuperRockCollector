@@ -25,6 +25,9 @@ PImage upgradesButton2;
 PImage settingsButton1;
 PImage settingsButton2;
 
+// upgrades
+PImage neutralizerUpgradeIcon;
+
 void loadLoadingSpinner() {
   loadingSpinner = loadImage(dataPath("art/loading-spinner.png"));
 }
@@ -41,16 +44,22 @@ void loadSounds() {
 void loadUiImages() {
   background = requestImage(dataPath("art/background-wood-grain.png"));
 
+  // maisy!!!
   maisy1 = requestImage(dataPath("art/maisy-1.png"));
   maisy2 = requestImage(dataPath("art/maisy-2.png"));
   maisySpeechBubble1 = requestImage(dataPath("art/maisy-speech-bubble-1.png"));
   maisySpeechBubble2 = requestImage(dataPath("art/maisy-speech-bubble-2.png"));
 
+  // menu ui
   menuBackground = requestImage(dataPath("art/menu-background.png"));
   menuXOutButton = requestImage(dataPath("art/menu-x-out-button.png"));
 
+  // left side icons
   upgradesButton1 = requestImage(dataPath("art/upgrades-icon-1.png"));
   upgradesButton2 = requestImage(dataPath("art/upgrades-icon-2.png"));
   settingsButton1 = requestImage(dataPath("art/settings-icon-1.png"));
   settingsButton2 = requestImage(dataPath("art/settings-icon-2.png"));
+
+  // upgrades
+  neutralizerUpgradeIcon = requestImage(dataPath("art/localized-temporal-deneutralizer-upgrade.png"));
 }
