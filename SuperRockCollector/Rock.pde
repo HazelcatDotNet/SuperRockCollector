@@ -13,7 +13,8 @@ public class Rock {
   // current destination of the rock
   PVector dest;
   boolean waitingToMove = false;
-  int waitTimeRemaining;
+  int waitStartTime;
+  int waitDuration;
   
   float sizeX;
   float sizeY;
@@ -30,7 +31,7 @@ public class Rock {
     setLocation(farmCenter, farmCenter);
     chooseDest();
     
-    speed = ceil(frameRate / 40.0);
+    calculateSpeed();
   }
   
   void display() {
@@ -43,6 +44,10 @@ public class Rock {
   
   void setRockOpacity() {
     setDrawOpacity(255);
+  }
+
+  void calculateSpeed() {
+    speed = (30.0 / framerate);
   }
   
   // move the rock, bouncing it off walls if necessary
@@ -63,19 +68,19 @@ public class Rock {
     } else {
       setLocation(dest.x, dest.y);
       startToRestBetweenMoves();
-    } //<>//
+    }
   }
   
   void startToRestBetweenMoves() {
     waitingToMove = true;
-    waitTimeRemaining = random.nextInt(int(frameRate), int(frameRate) * 5);
+    waitStartTime = millis();
+    // Random wait between 1-5 seconds
+    waitDuration = random.nextInt(1000, 5001);
   }
   
   void waitToMove() {
     if (waitingToMove) {
-      waitTimeRemaining--;
-      
-      if (waitTimeRemaining <= 0) {
+      if (millis() - waitStartTime >= waitDuration) {
         waitingToMove = false;
         chooseDest();
       }
@@ -154,7 +159,7 @@ public class Rock {
   // Field order (pipe-delimited):
   // 0:id | 1:rockType | 2:rockFileName | 3:loc.x | 4:loc.y |
   // 5:dest.x | 6:dest.y | 7:speed | 8:sizeX | 9:sizeY |
-  // 10:waitingToMove | 11:waitTimeRemaining
+  // 10:waitingToMove | 11:waitDuration
   final String DELIM = "|";
 
   String toData() {
@@ -169,7 +174,7 @@ public class Rock {
            sizeX                                   + DELIM +
            sizeY                                   + DELIM +
            waitingToMove                           + DELIM +
-           (waitingToMove ? waitTimeRemaining : 0);
+           (waitingToMove ? waitDuration : 0);
   }
   
 }

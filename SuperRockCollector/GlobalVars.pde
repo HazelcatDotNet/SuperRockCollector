@@ -27,6 +27,7 @@ float maisyTextSize;
 String[] rockFileNames = { "standard" };
 
 Random random = new Random();
+int lastSecondTime;
 
 int rocksOnScreenLimit = 20;
 

@@ -52,23 +52,29 @@ void saveData() {
           + ", rocks=" + rocks.size());
 }
 
+// SAVE DEFAULTS
 void setSaveDefaults() {
   totalRocks = 0;
   oldScreenSize = 800;
   newScreenSize = 800;
-  frameRate(30);
-  rocks = new ArrayList<Rock>();
+  setDefaultFrameRate();
+}
+
+void setDefaultFrameRate() {
+  framerate = 25;
+  frameRate(framerate);
 }
 
 // ------------------------------------------------------------
 //  LOAD
 // ------------------------------------------------------------
 void loadData() {
-  // Initialise defaults so the game works even without a save file
-  setSaveDefaults();
+  rocks = new ArrayList<Rock>();
 
   String[] lines = loadStrings(dataPath(SAVE_NAME));
   if (lines == null) {
+    // Initialise defaults so the game works even without a save file
+    setSaveDefaults();
     println("[SaveLoad] No save file found — starting fresh.");
     return;
   }
@@ -104,7 +110,14 @@ void loadData() {
           windowResize(newScreenSize, newScreenSize);
         }
       } else if (key.equals("newFrameRate")) {
-        if (newFrameRate > 0) frameRate(int(value));
+        int intendedNewFrameRate = int(value);
+        framerate = intendedNewFrameRate;
+        if (intendedNewFrameRate > 0) {
+          frameRate(intendedNewFrameRate);
+          framerate = intendedNewFrameRate;
+        } else {
+          setDefaultFrameRate();
+        }
       }
       // add future simple variables here, e.g.:
       //   else if (key.equals("coins")) coins = int(value);
@@ -149,12 +162,15 @@ Rock rockFromData(String line) {
   r.loc  = new PVector(float(p[3]) * scale, float(p[4]) * scale);
   r.dest = new PVector(float(p[5]) * scale, float(p[6]) * scale);
 
-  r.speed = float(p[7]);
+  r.calculateSpeed(); // recalculate speed based on current frame rate
   r.sizeX = float(p[8]);
   r.sizeY = float(p[9]);
 
-  r.waitingToMove    = boolean(p[10]);
-  r.waitTimeRemaining = int(p[11]);
+  r.waitingToMove = boolean(p[10]);
+  if (r.waitingToMove) {
+    r.waitStartTime = millis();
+    r.waitDuration = int(p[11]);
+  }
 
   r.setImage();                        // restore image after loading
   r.setLocation(r.loc.x, r.loc.y);    // recalculate edges

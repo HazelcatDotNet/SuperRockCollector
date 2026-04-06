@@ -115,7 +115,8 @@ void closeMenu() {
 }
 
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
-  int phase = (millis() / millisBetweenChanges) % 2;
+  float elapsedTime = millis() / (float)millisBetweenChanges;
+  int phase = (int)elapsedTime % 2;
   PImage imgToDraw = (phase == 0) ? img1 : img2;
 
   imageMode(CENTER);
@@ -134,13 +135,9 @@ float topLeftSideIconY() {
   return corner + halfCorner;
 }
 
-float iconsX() {
-  return halfCorner;
-}
-
 void drawLeftSideIcons() {
   imageMode(CENTER);
-  float iconsX = iconsX();
+  float iconsX = halfCorner;
   int animationSpeed = 500; // milliseconds between animation changes
   
   textSize(leftSideIconsTextSize);
@@ -166,7 +163,7 @@ void drawLeftSideIcons() {
 }
 
 void checkForLeftSideIconClicks() {
-  float iconsX = iconsX();
+  float iconsX = halfCorner;
   float halfIconSize = leftSideIconSize / 2;
   
   for (int i = 0; i < iconOrder.length; i++) {
@@ -216,6 +213,9 @@ String wrapText(String text, int maxCharCount) {
 
 void displayLoadingScreen() {
   background(255);
+  
+  // Rotate at constant speed: 360 degrees per 2 seconds
+  loadingSpinnerAngle = (millis() % 2000) / 2000.0 * TWO_PI;
 
   pushMatrix();
     translate(width/2, height/2);
@@ -223,8 +223,6 @@ void displayLoadingScreen() {
     imageMode(CENTER);
     image(loadingSpinner, 0, 0, corner * 0.7, corner * 0.7);
   popMatrix();
-  
-  loadingSpinnerAngle += 0.1;
 }
 
 void startSoundLoop(SoundFile sound) {

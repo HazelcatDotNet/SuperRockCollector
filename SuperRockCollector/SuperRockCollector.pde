@@ -9,7 +9,6 @@ import processing.sound.*;
 
 void setup() {  
   size(800, 800);
-  frameRate(30);
   loaded = false;
   
   loadLoadingSpinner();
@@ -43,6 +42,17 @@ void draw() {
     if (millis() >= loadEndTime) {
       onGameLoad();
     }
+  }
+
+  oncePerSecond();
+}
+
+void oncePerSecond() {
+  if (millis() - lastSecondTime >= 1000) {
+    lastSecondTime = millis();
+
+    // everything below this comment will run once per second
+    //println(frameRate);
   }
 }
 
