@@ -47,7 +47,7 @@ public class Rock {
   }
 
   void calculateSpeed() {
-    speed = (30.0 / framerate);
+    speed = (30.0 / frameRate);
   }
   
   // move the rock, bouncing it off walls if necessary

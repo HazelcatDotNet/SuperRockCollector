@@ -61,8 +61,7 @@ void setSaveDefaults() {
 }
 
 void setDefaultFrameRate() {
-  framerate = 25;
-  frameRate(framerate);
+  frameRate(25);
 }
 
 // ------------------------------------------------------------
@@ -111,10 +110,8 @@ void loadData() {
         }
       } else if (key.equals("newFrameRate")) {
         int intendedNewFrameRate = int(value);
-        framerate = intendedNewFrameRate;
         if (intendedNewFrameRate > 0) {
           frameRate(intendedNewFrameRate);
-          framerate = intendedNewFrameRate;
         } else {
           setDefaultFrameRate();
         }

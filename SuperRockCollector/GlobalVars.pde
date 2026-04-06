@@ -36,7 +36,6 @@ final int ROCK_FIELD_COUNT = 12;
 // the following variables are saved
 long totalRocks;
 ArrayList<Rock> rocks;
-int framerate = 30;
 int oldScreenSize;
 int newScreenSize;
 int newFrameRate;
