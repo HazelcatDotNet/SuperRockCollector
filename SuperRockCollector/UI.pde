@@ -12,6 +12,7 @@ float maxMenuSize;
 float leftSideIconsTextSize;
 float leftSideIconSize;
 float[] leftSideIconYPositions;
+float upgradeDescriptionTextSize;
 String[] iconOrder = {"upgrades", "settings"};
 
 float corner;
@@ -66,10 +67,56 @@ void drawMenu() {
 }
 
 void drawUpgradesMenu() {
-  textSize(corner / 4);
   fill(0, 0, 0);
-  textAlign(CENTER, TOP);
-  text("upgrades coming soon!", screenCenter, height / 3);
+  textAlign(LEFT, TOP);
+  
+  float horizontalPadding = corner / 3;
+  float verticalPadding = corner / 3;
+  float betweenUpgradesPadding = corner / 4;
+  float imageSize = corner / 2;
+  float imagePadding = corner / 6;
+  int animationSpeed = 500; // milliseconds between animation changes
+  
+  float startX = screenCenter - (maxMenuSize / 2) + horizontalPadding;
+  float startY = screenCenter - (maxMenuSize / 2) + verticalPadding;
+  
+  float currentY = startY;
+  
+  for (int i = 0; i < upgradeOrder.length; i++) {
+    String upgradeKey = upgradeOrder[i];
+    Upgrade upgrade = upgradesByKey.get(upgradeKey);
+    
+    if (upgrade != null) {
+      // Draw upgrade image
+      float imageX = startX + imageSize / 2;
+      float imageY = currentY + imageSize / 2;
+      animateDrawing(upgrade.image1, upgrade.image2, imageX, imageY, imageSize, imageSize, animationSpeed);
+      
+      // Draw upgrade name
+      float textX = startX + imageSize + imagePadding;
+      float textY = currentY;
+      textSize(corner / 5);
+      fill(0, 0, 0);
+      text(upgrade.name, textX, textY);
+      float nameHeight = corner / 5 * 1.2;
+      
+      // Draw cost
+      textSize(corner / 6);
+      float costY = textY + nameHeight;
+      text("cost: " + upgrade.cost + " rocks", textX, costY);
+      float costHeight = corner / 6 * 1.2;
+      
+      // Draw description
+      textSize(upgradeDescriptionTextSize);
+      float descY = costY + costHeight;
+      text(upgrade.description, textX, descY);
+      
+      // Move to next item with padding
+      float totalTextHeight = nameHeight + costHeight + upgrade.descriptionHeight + betweenUpgradesPadding;
+      float itemHeight = max(imageSize, totalTextHeight);
+      currentY += itemHeight;
+    }
+  }
 }
 
 void drawSettingsMenu() {
@@ -239,6 +286,7 @@ void calculateScreenAreas() {
   leftSideIconsTextSize = corner / 5;
   maxMenuSize = width * 0.9;
   leftSideIconSize = corner * 0.8;
+  upgradeDescriptionTextSize = corner / 7;
   
   // Calculate icon Y positions based on order
   leftSideIconYPositions = new float[iconOrder.length];

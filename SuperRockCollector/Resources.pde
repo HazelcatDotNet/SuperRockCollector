@@ -25,8 +25,6 @@ PImage upgradesButton2;
 PImage settingsButton1;
 PImage settingsButton2;
 
-// upgrades
-PImage neutralizerUpgradeIcon;
 
 void loadLoadingSpinner() {
   loadingSpinner = loadImage(dataPath("art/loading-spinner.png"));
@@ -59,7 +57,4 @@ void loadUiImages() {
   upgradesButton2 = requestImage(dataPath("art/upgrades-icon-2.png"));
   settingsButton1 = requestImage(dataPath("art/settings-icon-1.png"));
   settingsButton2 = requestImage(dataPath("art/settings-icon-2.png"));
-
-  // upgrades
-  neutralizerUpgradeIcon = requestImage(dataPath("art/localized-temporal-deneutralizer-upgrade.png"));
 }

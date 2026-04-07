@@ -23,6 +23,7 @@ void setup() {
   attachAutoSave();
   
   loadData();
+  loadUpgrades();
   
   loadEndTime = millis() + 1500;
 }
