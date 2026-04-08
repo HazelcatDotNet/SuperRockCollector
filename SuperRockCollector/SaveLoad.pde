@@ -82,77 +82,34 @@ void loadData() {
 
   String[] lines = loadStrings(dataPath(SAVE_NAME));
   if (lines == null) {
-    // Initialise defaults so the game works even without a save file
     setSaveDefaults();
     println("[SaveLoad] No save file found — starting fresh.");
     return;
   }
 
   String currentSection = "";
-  int upgradeIndex = 0;  // Track which upgrade we're loading
+  ArrayList<String> sectionLines = new ArrayList<String>();
 
   for (String raw : lines) {
     String line = trim(raw);
     if (line.length() == 0) continue;
 
-    // ---- section open/close tags ----
+    // Section close tag
     if (line.startsWith("[/")) {
+      processSectionLines(currentSection, sectionLines);
+      sectionLines.clear();
       currentSection = "";
-      upgradeIndex = 0;  // Reset when section closes
       continue;
     }
+
+    // Section open tag
     if (line.startsWith("[") && line.endsWith("]")) {
       currentSection = line.substring(1, line.length() - 1);
-      upgradeIndex = 0;  // Reset when new section opens
       continue;
     }
 
-    // ---- parse contents by section ----
-    if (currentSection.equals("vars")) {
-      String[] parts = split(line, '=');
-      if (parts.length < 2) continue;
-      String key   = parts[0];
-      String value = parts[1];
-
-      if (key.equals("totalRocks")) totalRocks = Long.parseLong(value);
-      else if (key.equals("oldScreenSize")) oldScreenSize = int(value);
-      else if (key.equals("newScreenSize")) {
-        newScreenSize = int(value);
-        if (newScreenSize != oldScreenSize) {
-          windowResize(newScreenSize, newScreenSize);
-        }
-      } else if (key.equals("newFrameRate")) {
-        int intendedNewFrameRate = int(value);
-        if (intendedNewFrameRate > 0) {
-          frameRate(intendedNewFrameRate);
-        } else {
-          setDefaultFrameRate();
-        }
-      }
-      // add future simple variables here, e.g.:
-      //   else if (key.equals("coins")) coins = int(value);
-      
-      // BEFORE LOADING ROCKS, calculate screen areas (e.g. corner, farm center, etc.)
-      calculateScreenAreas();
-
-    } else if (currentSection.equals("rocks")) {
-      try {
-        rocks.add(rockFromData(line));
-      } catch (Exception e) {
-        println("[SaveLoad] Skipping malformed rock entry: " + line);
-        e.printStackTrace();
-      }
-    } else if (currentSection.equals("upgrades")) {
-      try {
-        upgradeFromData(line, upgradeIndex);
-        upgradeIndex++;
-      } catch (Exception e) {
-        println("[SaveLoad] Skipping malformed upgrade entry: " + line);
-        e.printStackTrace();
-      }
-    }
-    // add future list sections here, e.g.:
-    //   } else if (currentSection.equals("inventory")) { ... }
+    // Accumulate lines for the current section
+    sectionLines.add(line);
   }
 
   populatePurchasedUpgrades();
@@ -161,6 +118,73 @@ void loadData() {
 
   println("[SaveLoad] Game loaded. totalRocks=" + totalRocks
           + ", rocks=" + rocks.size() + ", upgrades=" + upgradeOrder.length);
+}
+
+// Route section processing to appropriate handler
+void processSectionLines(String sectionName, ArrayList<String> lines) {
+  if (sectionName.equals("vars")) {
+    loadVarsSection(lines);
+  } else if (sectionName.equals("rocks")) {
+    loadRocksSection(lines);
+  } else if (sectionName.equals("upgrades")) {
+    loadUpgradesSection(lines);
+  }
+}
+
+// Load all variables from the vars section
+void loadVarsSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    String[] parts = split(line, '=');
+    if (parts.length < 2) continue;
+
+    String key = parts[0];
+    String value = parts[1];
+
+    if (key.equals("totalRocks")) {
+      totalRocks = Long.parseLong(value);
+    } else if (key.equals("oldScreenSize")) {
+      oldScreenSize = int(value);
+    } else if (key.equals("newScreenSize")) {
+      newScreenSize = int(value);
+      if (newScreenSize != oldScreenSize) {
+        windowResize(newScreenSize, newScreenSize);
+      }
+    } else if (key.equals("newFrameRate")) {
+      int intendedNewFrameRate = int(value);
+      if (intendedNewFrameRate > 0) {
+        frameRate(intendedNewFrameRate);
+      } else {
+        setDefaultFrameRate();
+      }
+    }
+  }
+
+  // After loading all vars, calculate screen areas
+  calculateScreenAreas();
+}
+
+// Load all rocks from the rocks section
+void loadRocksSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    try {
+      rocks.add(rockFromData(line));
+    } catch (Exception e) {
+      println("[SaveLoad] Skipping malformed rock entry: " + line);
+      e.printStackTrace();
+    }
+  }
+}
+
+// Load all upgrades from the upgrades section
+void loadUpgradesSection(ArrayList<String> lines) {
+  for (int i = 0; i < lines.size(); i++) {
+    try {
+      upgradeFromData(lines.get(i), i);
+    } catch (Exception e) {
+      println("[SaveLoad] Skipping malformed upgrade entry: " + lines.get(i));
+      e.printStackTrace();
+    }
+  }
 }
 
 Rock rockFromData(String line) {
@@ -231,11 +255,4 @@ void attachAutoSave() {
       System.exit(0); // exit immediately without manual frame disposal
     }
   });
-}
-
-Rock newRockOfType(RockType rockType) {
-  switch (rockType) {
-    case LIZARD: return new LizardRock();
-    default:     return new StandardRock();
-  }
 }

@@ -82,3 +82,10 @@ void spawnXRocks(int x) {
     spawnRock(RockType.STANDARD);
   }
 }
+
+Rock newRockOfType(RockType rockType) {
+  switch (rockType) {
+    case LIZARD: return new LizardRock();
+    default:     return new StandardRock();
+  }
+}
