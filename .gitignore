@@ -1,9 +1,6 @@
 *.log
 *.DS_Store
 
-# just in case any ableton files sneak in here
-*.asd
-
 # don't push save data
 save.txt
 
