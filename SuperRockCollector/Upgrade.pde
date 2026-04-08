@@ -33,7 +33,7 @@ void loadUpgrades() {
 void setUpgradeDescriptions() {
     for (Upgrade upgrade : upgrades) {
         upgrade.setWrappedDescription();
-        upgrade.setDescriptionHeight();
+        upgrade.descriptionHeight = getTextBlockHeight(upgrade.description, upgradeDescriptionTextSize);
     }
 }
 
@@ -59,21 +59,6 @@ class Upgrade {
 
     void setWrappedDescription() {
         description = wrapText(description, floor(corner * 0.5));
-    }
-
-    void setDescriptionHeight() {
-        // Count the number of lines in description (newline characters + 1)
-        int lineCount = description.split("\n").length;
-        
-        // Set text size to match what's used in the UI
-        textSize(upgradeDescriptionTextSize);
-        
-        // Calculate height based on textAscent and textDescent
-        float lineHeight = textAscent() + textDescent();
-        
-        // Add line spacing multiplier to account for padding between lines
-        float lineSpacingMultiplier = 1.1;
-        descriptionHeight = lineCount * lineHeight * lineSpacingMultiplier;
     }
 
     // Save upgrade state as a pipe-delimited string: key|hasPurchased|isToggledOn

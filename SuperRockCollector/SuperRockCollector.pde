@@ -30,9 +30,8 @@ void setup() {
 
 void draw() {
   if (loaded) {
-    // display background & increment rocks if menu is closed or animation is in progress
-    if (menuOpen == Menu.NONE || menuOpeningAnimationInProgress) {
-      drawBackgroundUi();
+    drawBackgroundUi();
+    if (menuOpen == Menu.NONE) {
       incrementRocks();
     }
     drawForegroundUi();
@@ -73,10 +72,14 @@ void mousePressed() {
 }
 
 void keyPressed() {
+  if (key == 'd') {
+    menuOpen = Menu.DEBUG;
+    menuOpeningAnimationInProgress = true;
+    return;
+  }
+
   if (key == 's') {
     spawnRock(RockType.LIZARD);
-  } else if (key == 'b') {
-    totalRocks += 1000;
   }
 }
 

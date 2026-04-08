@@ -21,6 +21,8 @@ PImage menuBackground;
 PImage menuXOutButton;
 PImage buyButton1;
 PImage buyButton2;
+PImage checkboxChecked;
+PImage checkboxUnchecked;
 
 // left-side icons
 PImage upgradesButton1;
@@ -56,6 +58,8 @@ void loadUiImages() {
   menuXOutButton = requestImage(dataPath("art/menu-x-out-button.png"));
   buyButton1 = requestImage(dataPath("art/buy-button-1.png"));
   buyButton2 = requestImage(dataPath("art/buy-button-2.png"));
+  checkboxChecked = requestImage(dataPath("art/checkbox-checked.png"));
+  checkboxUnchecked = requestImage(dataPath("art/checkbox-unchecked.png"));
 
   // left side icons
   upgradesButton1 = requestImage(dataPath("art/upgrades-icon-1.png"));
