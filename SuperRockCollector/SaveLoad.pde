@@ -57,6 +57,20 @@ void saveData() {
   }
   lines.add("[/upgrades]");
 
+  // ---- maisyPokeLinesIndexes list ----
+  lines.add("[maisyPokeLinesIndexes]");
+  for (Integer index : maisyPokeLinesIndexesRecieved) {
+    lines.add(str(index));
+  }
+  lines.add("[/maisyPokeLinesIndexes]");
+
+  // ---- rock clicks by type ----
+  lines.add("[rockClicks]");
+  for (RockType rockType : rockClicksByType.keySet()) {
+    lines.add(rockType + "=" + rockClicksByType.get(rockType));
+  }
+  lines.add("[/rockClicks]");
+
   saveStrings(dataPath(SAVE_NAME), lines.toArray(new String[0]));
   println("[SaveLoad] Game saved. totalRocks=" + totalRocks
           + ", rocks=" + rocks.size() + ", upgrades=" + upgradeOrder.length);
@@ -68,6 +82,7 @@ void setSaveDefaults() {
   oldScreenSize = 800;
   newScreenSize = 800;
   setDefaultFrameRate();
+  initializeRockClickTracking();
 }
 
 void setDefaultFrameRate() {
@@ -79,6 +94,7 @@ void setDefaultFrameRate() {
 // ------------------------------------------------------------
 void loadData() {
   rocks = new ArrayList<Rock>();
+  initializeRockClickTracking();
 
   String[] lines = loadStrings(dataPath(SAVE_NAME));
   if (lines == null) {
@@ -128,6 +144,10 @@ void processSectionLines(String sectionName, ArrayList<String> lines) {
     loadRocksSection(lines);
   } else if (sectionName.equals("upgrades")) {
     loadUpgradesSection(lines);
+  } else if (sectionName.equals("maisyPokeLinesIndexes")) {
+    loadMaisyPokeLinesIndexesSection(lines);
+  } else if (sectionName.equals("rockClicks")) {
+    loadRockClicksSection(lines);
   }
 }
 
@@ -183,6 +203,33 @@ void loadUpgradesSection(ArrayList<String> lines) {
     } catch (Exception e) {
       println("[SaveLoad] Skipping malformed upgrade entry: " + lines.get(i));
       e.printStackTrace();
+    }
+  }
+}
+
+// Load maisyPokeLinesIndexes from the maisyPokeLinesIndexes section
+void loadMaisyPokeLinesIndexesSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    try {
+      maisyPokeLinesIndexesRecieved.add(Integer.parseInt(line));
+    } catch (NumberFormatException e) {
+      println("[SaveLoad] Skipping malformed maisyPokeLinesIndex entry: " + line);
+    }
+  }
+}
+
+// Load rock clicks from the rockClicks section
+void loadRockClicksSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    try {
+      String[] parts = split(line, '=');
+      if (parts.length < 2) continue;
+      
+      RockType rockType = RockType.valueOf(parts[0]);
+      int clickCount = int(parts[1]);
+      rockClicksByType.put(rockType, clickCount);
+    } catch (Exception e) {
+      println("[SaveLoad] Skipping malformed rockClicks entry: " + line);
     }
   }
 }

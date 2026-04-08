@@ -1,3 +1,5 @@
+ArrayList<Integer> maisyPokeLinesIndexesRecieved = new ArrayList<Integer>();
+
 // returns whether or not the mouse is on the maisy box
 boolean mouseOnMaisy() {
   float centerY = halfCorner;
@@ -17,6 +19,10 @@ void checkForMaisyClick() {
     
     int index = int(random(maisyPokeLines.length));
     //index = 31 - 1; // defined line number for debugging
+
+    if (!maisyPokeLinesIndexesRecieved.contains(index)) {
+      maisyPokeLinesIndexesRecieved.add(index);
+    }
     
     maisyTalkingTextLines = new ArrayList<String>(Arrays.asList(maisyPokeLines[index].split(" / ")));
     getNextMaisyLine(index + 1);

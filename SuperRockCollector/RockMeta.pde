@@ -3,6 +3,16 @@
  * individual rocks / rock behavior
 */
 
+// Track clicks per rock type
+HashMap<RockType, Integer> rockClicksByType = new HashMap<RockType, Integer>();
+
+void initializeRockClickTracking() {
+  rockClicksByType.put(RockType.STANDARD, 0);
+  rockClicksByType.put(RockType.LIZARD, 0);
+}
+
+
+
 // display rocks and move them every frame
 void incrementRocks() {
   for (int i = 0; i < rocks.size(); i++) {

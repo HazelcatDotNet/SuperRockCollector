@@ -107,6 +107,10 @@ public class Rock {
   
   int onClick() {
     playSound();
+
+    // Track the click for this rock type
+    rockClicksByType.put(rockType, rockClicksByType.get(rockType) + 1);
+
     return rocksCollectedUponClick();
   }
   
