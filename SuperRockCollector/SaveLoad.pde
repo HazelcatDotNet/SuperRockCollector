@@ -130,8 +130,7 @@ void loadData() {
     sectionLines.add(line);
   }
 
-  populatePurchasedUpgrades();
-  populateUnpurchasedUpgrades();
+  populateUpgradeLists();
   setUpgradeDescriptions();
 
   println("[SaveLoad] Game loaded. totalRocks=" + totalRocks

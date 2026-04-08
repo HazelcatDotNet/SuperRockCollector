@@ -105,6 +105,11 @@ void attemptToBuyUpgrade(Upgrade upgrade) {
     }
 }
 
+void populateUpgradeLists() {
+    populateUnpurchasedUpgrades();
+    populatePurchasedUpgrades();
+}
+
 void populateUnpurchasedUpgrades() {
     ArrayList<String> unpurchased = new ArrayList<String>();
     for (String upgradeKey : upgradeOrder) {
