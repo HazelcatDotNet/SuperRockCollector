@@ -16,8 +16,11 @@ PImage loadingSpinner;
 // music
 SoundFile mainThemeSong;
 
+// menu ui
 PImage menuBackground;
 PImage menuXOutButton;
+PImage buyButton1;
+PImage buyButton2;
 
 // left-side icons
 PImage upgradesButton1;
@@ -51,6 +54,8 @@ void loadUiImages() {
   // menu ui
   menuBackground = requestImage(dataPath("art/menu-background.png"));
   menuXOutButton = requestImage(dataPath("art/menu-x-out-button.png"));
+  buyButton1 = requestImage(dataPath("art/buy-button-1.png"));
+  buyButton2 = requestImage(dataPath("art/buy-button-2.png"));
 
   // left side icons
   upgradesButton1 = requestImage(dataPath("art/upgrades-icon-1.png"));

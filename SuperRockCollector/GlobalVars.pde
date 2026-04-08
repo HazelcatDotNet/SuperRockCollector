@@ -26,11 +26,6 @@ float maisyTextSize;
 // to add a new rock type: add file name to both this list and the Rock class, and add the rock type to newRockOfType in RockMeta
 String[] rockFileNames = { "standard" };
 
-// Upgrades
-ArrayList<Upgrade> upgrades;
-String[] upgradeOrder = {"deneutralizer", "deneutralizer2"};
-HashMap<String, Upgrade> upgradesByKey;
-
 Random random = new Random();
 int lastSecondTime;
 

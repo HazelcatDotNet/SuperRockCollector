@@ -22,8 +22,8 @@ void setup() {
   // Automatically save when the window is closed
   attachAutoSave();
   
-  loadData();
   loadUpgrades();
+  loadData();
   
   loadEndTime = millis() + 1500;
 }
@@ -75,6 +75,8 @@ void mousePressed() {
 void keyPressed() {
   if (key == 's') {
     spawnRock(RockType.LIZARD);
+  } else if (key == 'b') {
+    totalRocks += 1000;
   }
 }
 

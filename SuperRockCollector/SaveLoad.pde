@@ -47,9 +47,19 @@ void saveData() {
   }
   lines.add("[/rocks]");
 
+  // ---- upgrades list ----
+  lines.add("[upgrades]");
+  for (String upgradeKey : upgradeOrder) {
+    Upgrade upgrade = upgradesByKey.get(upgradeKey);
+    if (upgrade != null) {
+      lines.add(upgrade.toData());
+    }
+  }
+  lines.add("[/upgrades]");
+
   saveStrings(dataPath(SAVE_NAME), lines.toArray(new String[0]));
   println("[SaveLoad] Game saved. totalRocks=" + totalRocks
-          + ", rocks=" + rocks.size());
+          + ", rocks=" + rocks.size() + ", upgrades=" + upgradeOrder.length);
 }
 
 // SAVE DEFAULTS
@@ -79,6 +89,7 @@ void loadData() {
   }
 
   String currentSection = "";
+  int upgradeIndex = 0;  // Track which upgrade we're loading
 
   for (String raw : lines) {
     String line = trim(raw);
@@ -87,10 +98,12 @@ void loadData() {
     // ---- section open/close tags ----
     if (line.startsWith("[/")) {
       currentSection = "";
+      upgradeIndex = 0;  // Reset when section closes
       continue;
     }
     if (line.startsWith("[") && line.endsWith("]")) {
       currentSection = line.substring(1, line.length() - 1);
+      upgradeIndex = 0;  // Reset when new section opens
       continue;
     }
 
@@ -129,13 +142,25 @@ void loadData() {
         println("[SaveLoad] Skipping malformed rock entry: " + line);
         e.printStackTrace();
       }
+    } else if (currentSection.equals("upgrades")) {
+      try {
+        upgradeFromData(line, upgradeIndex);
+        upgradeIndex++;
+      } catch (Exception e) {
+        println("[SaveLoad] Skipping malformed upgrade entry: " + line);
+        e.printStackTrace();
+      }
     }
     // add future list sections here, e.g.:
     //   } else if (currentSection.equals("inventory")) { ... }
   }
 
+  populatePurchasedUpgrades();
+  populateUnpurchasedUpgrades();
+  setUpgradeDescriptions();
+
   println("[SaveLoad] Game loaded. totalRocks=" + totalRocks
-          + ", rocks=" + rocks.size());
+          + ", rocks=" + rocks.size() + ", upgrades=" + upgradeOrder.length);
 }
 
 Rock rockFromData(String line) {
@@ -172,6 +197,26 @@ Rock rockFromData(String line) {
   r.setLocation(r.loc.x, r.loc.y);    // recalculate edges
 
   return r;
+}
+
+void upgradeFromData(String line, int upgradeIndex) {
+  String[] parts = line.split("\\|");
+  
+  if (parts.length < 3) {
+    throw new RuntimeException(
+      "[upgradeFromData] Expected at least 3 fields (name|hasPurchased|isToggledOn), got "
+      + parts.length + " in: " + line
+    );
+  }
+  
+  if (upgradeIndex >= 0 && upgradeIndex < upgradeOrder.length) {
+    String upgradeKey = upgradeOrder[upgradeIndex];
+    Upgrade upgrade = upgradesByKey.get(upgradeKey);
+    if (upgrade != null) {
+      println("[upgradeFromData] Loading upgrade: " + upgradeKey + ", hasPurchased=" + parts[1] + ", isToggledOn=" + parts[2]);
+      upgrade.fromData(line);
+    }
+  }
 }
 
 void attachAutoSave() {
