@@ -7,7 +7,7 @@ void loadUpgrades() {
         100,
         "This wacky artifact allows abnormal rocks to spawn!",
         requestImage(dataPath("art/deneutralizer-upgrade-1.png")),
-        requestImage(dataPath("art/deneutralizer-upgrade-1.png"))
+        requestImage(dataPath("art/deneutralizer-upgrade-2.png"))
     );
     upgrades.add(deneutralizer);
     upgradesByKey.put("deneutralizer", deneutralizer);
@@ -38,6 +38,9 @@ class Upgrade {
     String description;
     PImage image1;
     PImage image2;
+
+    boolean hasPurchased;
+    boolean isToggledOn;
 
     float descriptionHeight;
     

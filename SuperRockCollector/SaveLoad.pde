@@ -160,8 +160,7 @@ Rock rockFromData(String line) {
   r.dest = new PVector(float(p[5]) * scale, float(p[6]) * scale);
 
   r.calculateSpeed(); // recalculate speed based on current frame rate
-  r.sizeX = float(p[8]);
-  r.sizeY = float(p[9]);
+  r.calculateSize();
 
   r.waitingToMove = boolean(p[10]);
   if (r.waitingToMove) {

@@ -73,7 +73,7 @@ void drawUpgradesMenu() {
   float horizontalPadding = corner / 3;
   float verticalPadding = corner / 3;
   float betweenUpgradesPadding = corner / 4;
-  float imageSize = corner / 2;
+  float imageSize = corner * 0.65;
   float imagePadding = corner / 6;
   int animationSpeed = 500; // milliseconds between animation changes
   

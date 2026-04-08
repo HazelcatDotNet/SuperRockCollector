@@ -26,12 +26,18 @@ public class Rock {
   
   Rock() {
     setId();
-    setSize(30, 30);
+
+    calculateSize();
     loc = new PVector();
     setLocation(farmCenter, farmCenter);
     chooseDest();
     
     calculateSpeed();
+  }
+
+  void calculateSize() {
+    float scaler = 3.0 / 80.0;
+    setSize(width * scaler, width * scaler);
   }
   
   void display() {
