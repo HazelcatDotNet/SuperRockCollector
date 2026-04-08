@@ -1,6 +1,5 @@
 boolean loaded;
 long millisSinceLastSave;
-long totalPlayTimeSeconds;
 float loadingSpinnerAngle = random(TWO_PI);
 int loadEndTime;
 
@@ -25,15 +24,10 @@ int maisyShouldStopTalkingMillis;
 float defaultMaisyTextSize;
 float maisyTextSize;
 
-// to add a new rock type: add file name to both this list and the Rock class, and add the rock type to newRockOfType in RockMeta
-String[] rockFileNames = { "standard" };
-
 Random random = new Random();
 int lastSecondTime;
 
 int rocksOnScreenLimit = 20;
-
-final int ROCK_FIELD_COUNT = 12;
 
 // the following variables are saved
 long totalRocks;
@@ -41,3 +35,6 @@ ArrayList<Rock> rocks;
 int oldScreenSize;
 int newScreenSize;
 int newFrameRate;
+ArrayList<Integer> maisyPokeLinesIndexesRecieved = new ArrayList<Integer>();
+HashMap<RockType, Integer> rockClicksByType = new HashMap<RockType, Integer>(); // tracked clicks per rock type
+long totalPlayTimeSeconds;

@@ -1,3 +1,5 @@
+final int ROCK_FIELD_COUNT = 12;
+
 public class Rock {
   
   String id;

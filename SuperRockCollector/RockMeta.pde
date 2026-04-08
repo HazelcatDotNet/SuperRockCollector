@@ -3,15 +3,18 @@
  * individual rocks / rock behavior
 */
 
-// Track clicks per rock type
-HashMap<RockType, Integer> rockClicksByType = new HashMap<RockType, Integer>();
+/* to add a new rock type:
+- add file name to both this list and the Rock class
+- add the rock type to newRockOfType in RockMeta
+- add the rock type to rollRockType in RockMeta, with appropriate weighting
+*/
+String[] rockFileNames = { "standard" };
 
 void initializeRockClickTracking() {
-  rockClicksByType.put(RockType.STANDARD, 0);
-  rockClicksByType.put(RockType.LIZARD, 0);
+  for (RockType type : RockType.values()) {
+    rockClicksByType.put(type, 0);
+  }
 }
-
-
 
 // display rocks and move them every frame
 void incrementRocks() {
@@ -70,15 +73,7 @@ RockType rollRockType() {
 }
 
 void spawnRock(RockType rockType) {
-  Rock rock;
-  switch (rockType) {
-    case LIZARD:
-      rock = new LizardRock();
-      break;
-    default:
-      rock = new StandardRock();
-      break;
-  }
+  Rock rock = newRockOfType(rockType);
   
   float locX = random.nextInt(int(corner), int(width));
   float locY = random.nextInt(int(corner), int(width));

@@ -1,5 +1,3 @@
-ArrayList<Integer> maisyPokeLinesIndexesRecieved = new ArrayList<Integer>();
-
 // returns whether or not the mouse is on the maisy box
 boolean mouseOnMaisy() {
   float centerY = halfCorner;
