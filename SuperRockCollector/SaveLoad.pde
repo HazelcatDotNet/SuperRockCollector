@@ -36,6 +36,8 @@ void saveData() {
   lines.add("oldScreenSize=" + width);
   lines.add("newScreenSize=" + newScreenSize);
   lines.add("newFrameRate=" + newFrameRate);
+  totalPlayTimeSeconds = (totalPlayTimeSeconds + (millis() - millisSinceLastSave) / 1000);
+  lines.add("playTime=" + totalPlayTimeSeconds);
   // add future simple variables here, e.g.:
   //   lines.add("coins=" + coins);
   lines.add("[/vars]");
@@ -52,7 +54,7 @@ void saveData() {
   for (String upgradeKey : upgradeOrder) {
     Upgrade upgrade = upgradesByKey.get(upgradeKey);
     if (upgrade != null) {
-      lines.add(upgrade.toData());
+      lines.add(upgradeKey + "|" + upgrade.toData());
     }
   }
   lines.add("[/upgrades]");
@@ -176,6 +178,8 @@ void loadVarsSection(ArrayList<String> lines) {
       } else {
         setDefaultFrameRate();
       }
+    } else if (key.equals("playTime")) {
+      totalPlayTimeSeconds = Long.parseLong(value);
     }
   }
 
@@ -197,11 +201,11 @@ void loadRocksSection(ArrayList<String> lines) {
 
 // Load all upgrades from the upgrades section
 void loadUpgradesSection(ArrayList<String> lines) {
-  for (int i = 0; i < lines.size(); i++) {
+  for (String line : lines) {
     try {
-      upgradeFromData(lines.get(i), i);
+      upgradeFromData(line);
     } catch (Exception e) {
-      println("[SaveLoad] Skipping malformed upgrade entry: " + lines.get(i));
+      println("[SaveLoad] Skipping malformed upgrade entry: " + line);
       e.printStackTrace();
     }
   }
@@ -270,23 +274,22 @@ Rock rockFromData(String line) {
   return r;
 }
 
-void upgradeFromData(String line, int upgradeIndex) {
+void upgradeFromData(String line) {
   String[] parts = line.split("\\|");
   
-  if (parts.length < 3) {
+  if (parts.length < 4) {
     throw new RuntimeException(
-      "[upgradeFromData] Expected at least 3 fields (name|hasPurchased|isToggledOn), got "
+      "[upgradeFromData] Expected at least 4 fields (key|name|hasPurchased|isToggledOn), got "
       + parts.length + " in: " + line
     );
   }
   
-  if (upgradeIndex >= 0 && upgradeIndex < upgradeOrder.length) {
-    String upgradeKey = upgradeOrder[upgradeIndex];
-    Upgrade upgrade = upgradesByKey.get(upgradeKey);
-    if (upgrade != null) {
-      println("[upgradeFromData] Loading upgrade: " + upgradeKey + ", hasPurchased=" + parts[1] + ", isToggledOn=" + parts[2]);
-      upgrade.fromData(line);
-    }
+  String upgradeKey = parts[0];
+  Upgrade upgrade = upgradesByKey.get(upgradeKey);
+  if (upgrade != null) {
+    upgrade.fromData(line.substring(line.indexOf('|') + 1)); // pass everything after the key
+  } else {
+    println("[upgradeFromData] Warning: Upgrade key '" + upgradeKey + "' not found in upgradesByKey");
   }
 }
 

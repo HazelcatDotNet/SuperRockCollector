@@ -1,4 +1,6 @@
 boolean loaded;
+long millisSinceLastSave;
+long totalPlayTimeSeconds;
 float loadingSpinnerAngle = random(TWO_PI);
 int loadEndTime;
 

@@ -37,6 +37,7 @@ void draw() {
     drawForegroundUi();
     attemptToSpawnRocks();
     //drawMaisyHexagonHitbox();
+
   } else {
     displayLoadingScreen();
     if (millis() >= loadEndTime) {
@@ -58,6 +59,7 @@ void oncePerSecond() {
 
 void onGameLoad() {
   loaded = true;
+  millisSinceLastSave = millis();
   startSoundLoop(mainThemeSong);
 }
 
