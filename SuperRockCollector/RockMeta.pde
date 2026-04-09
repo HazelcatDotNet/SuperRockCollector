@@ -56,20 +56,25 @@ void attemptToSpawnRocks() {
 
 // decide what rock type to spawn (weighted)
 RockType rollRockType() {
-  int[] weights  = { 5,                  1            };
-  RockType[] types = { RockType.STANDARD, RockType.LIZARD };
+  if (!upgradesByKey.get("deneutralizer").isToggledOn) return RockType.STANDARD;
+
+  HashMap<RockType, Integer> typeWeights = new LinkedHashMap<RockType, Integer>();
+  typeWeights.put(RockType.STANDARD, 5);
+  typeWeights.put(RockType.LIZARD, 1);
   
   int total = 0;
-  for (int w : weights) total += w;
+  for (int weight : typeWeights.values()) {
+    total += weight;
+  }
   
   int roll = random.nextInt(total);
   int cumulative = 0;
-  for (int i = 0; i < weights.length; i++) {
-    cumulative += weights[i];
-    if (roll < cumulative) return types[i];
+  for (RockType type : typeWeights.keySet()) {
+    cumulative += typeWeights.get(type);
+    if (roll < cumulative) return type;
   }
   
-  return types[0]; // fallback, should never reach here
+  return RockType.STANDARD; // fallback, should never reach here
 }
 
 void spawnRock(RockType rockType) {
@@ -82,9 +87,9 @@ void spawnRock(RockType rockType) {
   rocks.add(rock);
 }
 
-void spawnXRocks(int x) {
+void spawnXRandomRocks(int x) {
   for (int i = 0; i < x; i++) {
-    spawnRock(RockType.STANDARD);
+    spawnRock(rollRockType());
   }
 }
 

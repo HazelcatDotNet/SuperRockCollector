@@ -6,6 +6,10 @@ float debugResetUpgradesButtonX;
 float debugResetUpgradesButtonY;
 float debugResetUpgradesButtonSize;
 
+float debugClearRocksButtonX;
+float debugClearRocksButtonY;
+float debugClearRocksButtonSize;
+
 void drawDebugMenu() {
   fill(0, 0, 0);
   textAlign(CENTER, CENTER);
@@ -19,53 +23,43 @@ void drawDebugMenu() {
   
   drawAddRocksButton(startX, startY, buttonSize);
   drawResetUpgradesButton(startX + buttonSize * 1.5, startY, buttonSize);
+  drawClearRocksButton(startX + buttonSize * 3, startY, buttonSize);
+}
+
+void drawDebugButton(float x, float y, float size, String text) {
+  fill(200);
+  stroke(0);
+  strokeWeight(2);
+  rectMode(CENTER);
+  rect(x, y, size, size);
+  
+  fill(0, 0, 0);
+  textSize(corner / 7);
+  text(text, x, y);
 }
 
 void drawAddRocksButton(float startX, float startY, float buttonSize) {
-  // Draw "Add 1000 Rocks" button
   debugAddRocksButtonX = startX;
   debugAddRocksButtonY = startY;
   debugAddRocksButtonSize = buttonSize;
   
-  fill(200);
-  stroke(0);
-  strokeWeight(2);
-  rectMode(CENTER);
-  rect(debugAddRocksButtonX, debugAddRocksButtonY, buttonSize, buttonSize);
-  
-  // Draw button text
-  fill(0, 0, 0);
-  textSize(corner / 6);
-  text("+1000", debugAddRocksButtonX, debugAddRocksButtonY);
+  drawDebugButton(startX, startY, buttonSize, "+1000\nrocks");
 }
 
 void drawResetUpgradesButton(float posX, float posY, float buttonSize) {
-  // Draw "Reset Upgrades" button
   debugResetUpgradesButtonX = posX;
   debugResetUpgradesButtonY = posY;
   debugResetUpgradesButtonSize = buttonSize;
   
-  fill(200);
-  stroke(0);
-  strokeWeight(2);
-  rectMode(CENTER);
-  rect(debugResetUpgradesButtonX, debugResetUpgradesButtonY, buttonSize, buttonSize);
-  
-  // Draw button text
-  fill(0, 0, 0);
-  textSize(corner / 6);
-  text("RESET", debugResetUpgradesButtonX, debugResetUpgradesButtonY - corner / 20);
-  textSize(corner / 8);
-  text("UP", debugResetUpgradesButtonX, debugResetUpgradesButtonY + corner / 20);
+  drawDebugButton(posX, posY, buttonSize, "reset\nupgrds");
 }
 
-void resetAllUpgrades() {
-  for (int i = 0; i < upgrades.size(); i++) {
-    upgrades.get(i).hasPurchased = false;
-    upgrades.get(i).isToggledOn = false;
-  }
+void drawClearRocksButton(float posX, float posY, float buttonSize) {
+  debugClearRocksButtonX = posX;
+  debugClearRocksButtonY = posY;
+  debugClearRocksButtonSize = buttonSize;
 
-  populateUpgradeLists();
+  drawDebugButton(posX, posY, buttonSize, "clear\nrocks");
 }
 
 void checkForDebugMenuClicks() {
@@ -86,4 +80,22 @@ void checkForDebugMenuClicks() {
     resetAllUpgrades();
     println("DEBUG: Reset all upgrades.");
   }
+  
+  float halfClearRocksButtonSize = debugClearRocksButtonSize / 2;
+  
+  // Check if "Clear Rocks" button was clicked
+  if (mouseX >= debugClearRocksButtonX - halfClearRocksButtonSize && mouseX <= debugClearRocksButtonX + halfClearRocksButtonSize &&
+      mouseY >= debugClearRocksButtonY - halfClearRocksButtonSize && mouseY <= debugClearRocksButtonY + halfClearRocksButtonSize) {
+    rocks.clear();
+    println("DEBUG: Cleared all rocks.");
+  }
+}
+
+void resetAllUpgrades() {
+  for (int i = 0; i < upgrades.size(); i++) {
+    upgrades.get(i).hasPurchased = false;
+    upgrades.get(i).isToggledOn = false;
+  }
+
+  populateUpgradeLists();
 }

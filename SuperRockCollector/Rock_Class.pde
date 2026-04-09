@@ -1,3 +1,4 @@
+// the number of Rock fields we save the data of
 final int ROCK_FIELD_COUNT = 12;
 
 public class Rock {

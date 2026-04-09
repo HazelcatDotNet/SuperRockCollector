@@ -1,11 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Iterator;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import processing.sound.*;
+import java.util.*;
 
 void setup() {  
   size(800, 800);
@@ -81,7 +75,7 @@ void keyPressed() {
   }
 
   if (key == 's') {
-    spawnRock(RockType.LIZARD);
+    spawnRock(rollRockType());
   }
 }
 
