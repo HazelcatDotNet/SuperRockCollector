@@ -21,6 +21,8 @@ PImage menuBackground;
 PImage menuXOutButton;
 PImage buyButton1;
 PImage buyButton2;
+PImage buyButtonGrayscale1;
+PImage buyButtonGrayscale2;
 PImage checkboxChecked;
 PImage checkboxUnchecked;
 
@@ -58,6 +60,11 @@ void loadUiImages() {
   menuXOutButton = requestImage(dataPath("art/menu-x-out-button.png"));
   buyButton1 = requestImage(dataPath("art/buy-button-1.png"));
   buyButton2 = requestImage(dataPath("art/buy-button-2.png"));
+  buyButtonGrayscale1 = loadImage(dataPath("art/buy-button-1.png"));
+  buyButtonGrayscale2 = loadImage(dataPath("art/buy-button-2.png"));
+  buyButtonGrayscale1.filter(GRAY);
+  buyButtonGrayscale2.filter(GRAY);
+
   checkboxChecked = requestImage(dataPath("art/checkbox-checked.png"));
   checkboxUnchecked = requestImage(dataPath("art/checkbox-unchecked.png"));
 

@@ -30,7 +30,7 @@ void loadUpgrades() {
     Upgrade deneutralizer2 = new Upgrade("jeff");
     deneutralizer2.setCost(200);
     deneutralizer2.setName("Jeff");
-    deneutralizer2.setDescription("Will bring you rocks from time to time!");
+    deneutralizer2.setDescription("Silly dog who will bring you rocks from time to time!");
     deneutralizer2.setMaisyPurchaseLine("hey, that's jeff! he's good at finding rocks. / I'm a bit scared of dogs, though...");
 }
 
@@ -86,6 +86,10 @@ class Upgrade {
 
     void setDescription(String description) {
         this.description = description;
+    }
+
+    boolean canAfford() {
+        return totalRocks >= cost;
     }
 
     void setWrappedDescription() {

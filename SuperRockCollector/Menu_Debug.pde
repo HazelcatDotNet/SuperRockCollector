@@ -10,6 +10,10 @@ float debugClearRocksButtonX;
 float debugClearRocksButtonY;
 float debugClearRocksButtonSize;
 
+float debugSetZeroRocksButtonX;
+float debugSetZeroRocksButtonY;
+float debugSetZeroRocksButtonSize;
+
 void drawDebugMenu() {
   fill(0, 0, 0);
   textAlign(CENTER, CENTER);
@@ -24,6 +28,7 @@ void drawDebugMenu() {
   drawAddRocksButton(startX, startY, buttonSize);
   drawResetUpgradesButton(startX + buttonSize * 1.5, startY, buttonSize);
   drawClearRocksButton(startX + buttonSize * 3, startY, buttonSize);
+  drawSetZeroRocksButton(startX + buttonSize * 4.5, startY, buttonSize);
 }
 
 void drawDebugButton(float x, float y, float size, String text) {
@@ -62,6 +67,14 @@ void drawClearRocksButton(float posX, float posY, float buttonSize) {
   drawDebugButton(posX, posY, buttonSize, "clear\nrocks");
 }
 
+void drawSetZeroRocksButton(float posX, float posY, float buttonSize) {
+  debugSetZeroRocksButtonX = posX;
+  debugSetZeroRocksButtonY = posY;
+  debugSetZeroRocksButtonSize = buttonSize;
+
+  drawDebugButton(posX, posY, buttonSize, "0\nrocks");
+}
+
 void checkForDebugMenuClicks() {
   float halfAddRocksButtonSize = debugAddRocksButtonSize / 2;
   
@@ -88,6 +101,15 @@ void checkForDebugMenuClicks() {
       mouseY >= debugClearRocksButtonY - halfClearRocksButtonSize && mouseY <= debugClearRocksButtonY + halfClearRocksButtonSize) {
     rocks.clear();
     println("DEBUG: Cleared all rocks.");
+  }
+  
+  float halfSetZeroRocksButtonSize = debugSetZeroRocksButtonSize / 2;
+  
+  // Check if "Set to 0 Rocks" button was clicked
+  if (mouseX >= debugSetZeroRocksButtonX - halfSetZeroRocksButtonSize && mouseX <= debugSetZeroRocksButtonX + halfSetZeroRocksButtonSize &&
+      mouseY >= debugSetZeroRocksButtonY - halfSetZeroRocksButtonSize && mouseY <= debugSetZeroRocksButtonY + halfSetZeroRocksButtonSize) {
+    totalRocks = 0;
+    println("DEBUG: Set totalRocks to 0.");
   }
 }
 

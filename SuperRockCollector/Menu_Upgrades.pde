@@ -54,6 +54,9 @@ void drawUpgradesMenu() {
 float drawUpgradeItem(Upgrade upgrade, String upgradeKey, float startX, float currentY, 
                        float imageSize, float imagePadding, float betweenUpgradesPadding, 
                        int animationSpeed) {
+
+  PImage[] buyButtonImages = upgrade.canAfford() ? new PImage[] { buyButton1, buyButton2 } : new PImage[] { buyButtonGrayscale1, buyButtonGrayscale2 };
+
   // Draw upgrade image
   float imageX = startX + imageSize / 2;
   float imageY = currentY + imageSize / 2;
@@ -69,11 +72,13 @@ float drawUpgradeItem(Upgrade upgrade, String upgradeKey, float startX, float cu
   
   // Draw cost
   textSize(corner / 6);
+  fill(upgrade.canAfford() ? positiveGreen : negativeRed);
   float costY = textY + nameHeight;
   text("cost: " + upgrade.cost + " rocks", textX, costY);
   float costHeight = (corner / 6) * 1.2;
   
   // Draw description
+  fill(0, 0, 0);
   textSize(upgradeDescriptionTextSize);
   float descY = costY + costHeight;
   text(upgrade.description, textX, descY);
@@ -81,7 +86,7 @@ float drawUpgradeItem(Upgrade upgrade, String upgradeKey, float startX, float cu
   // Draw buy button and track its position
   float buttonSize = corner * 0.45;
   float buttonX = (width - imageX);
-  animateDrawing(buyButton1, buyButton2, buttonX, imageY, buttonSize, buttonSize, animationSpeed);
+  animateDrawing(buyButtonImages[0], buyButtonImages[1], buttonX, imageY, buttonSize, buttonSize, animationSpeed);
   
   // Store button info for click detection
   buyButtons.add(new BuyButtonInfo(upgradeKey, buttonX, imageY, buttonSize));

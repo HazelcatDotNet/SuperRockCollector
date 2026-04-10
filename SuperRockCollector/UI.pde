@@ -3,6 +3,9 @@ float farmCenter;
 float screenCenter;
 float halfCorner;
 
+color positiveGreen = color(60, 212, 76);
+color negativeRed = color(214, 78, 68);
+
 void drawBackgroundUi() {
   background(255);
   imageMode(CORNER);
