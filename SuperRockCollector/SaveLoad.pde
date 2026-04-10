@@ -131,7 +131,7 @@ void loadData() {
   }
 
   populateUpgradeLists();
-  setUpgradeDescriptions();
+    setUpgradeDescriptions();
 
   println("[SaveLoad] Game loaded. totalRocks=" + totalRocks
           + ", rocks=" + rocks.size() + ", upgrades=" + upgradeOrder.length);

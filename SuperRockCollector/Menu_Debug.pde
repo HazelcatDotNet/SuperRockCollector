@@ -18,8 +18,8 @@ void drawDebugMenu() {
   float verticalPadding = corner / 3;
   float buttonSize = corner * 0.4;
   
-  float startX = screenCenter - (maxMenuSize / 2) + horizontalPadding + buttonSize / 2;
-  float startY = screenCenter - (maxMenuSize / 2) + verticalPadding + buttonSize / 2;
+  float startX = menuCenterX - (maxMenuSizeX / 2) + horizontalPadding + buttonSize / 2;
+  float startY = menuCenterY - (maxMenuSizeY / 2) + verticalPadding + buttonSize / 2;
   
   drawAddRocksButton(startX, startY, buttonSize);
   drawResetUpgradesButton(startX + buttonSize * 1.5, startY, buttonSize);

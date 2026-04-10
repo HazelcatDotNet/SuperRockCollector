@@ -32,8 +32,8 @@ void drawUpgradesMenu() {
   float imagePadding = corner / 6;
   int animationSpeed = 500; // milliseconds between animation changes
   
-  float startX = screenCenter - (maxMenuSize / 2) + horizontalPadding;
-  float startY = screenCenter - (maxMenuSize / 2) + verticalPadding;
+  float startX = menuCenterX - (maxMenuSizeX / 2) + horizontalPadding;
+  float startY = menuCenterY - (maxMenuSizeY / 2) + verticalPadding;
   
   float currentY = startY;
   buyButtons.clear(); // Clear previous button data
