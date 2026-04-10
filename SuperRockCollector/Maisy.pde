@@ -1,7 +1,7 @@
 String[] maisyPokeLines;
 String[] maisyLastNames;
 boolean maisyIsTalking;
-ArrayList<String> maisyTalkingTextLines;
+ArrayList<String> maisyTalkingTextLines = new ArrayList<String>();
 String maisyTalkingText = "";
 int maisyTalkingLinesIndex;
 
