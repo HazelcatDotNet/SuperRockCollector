@@ -69,8 +69,7 @@ void mousePressed() {
 
 void keyPressed() {
   if (key == 'd') {
-    menuOpen = Menu.DEBUG;
-    menuOpeningAnimationInProgress = true;
+    openMenu(Menu.DEBUG);
     return;
   }
 

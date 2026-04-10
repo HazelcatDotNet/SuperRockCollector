@@ -134,6 +134,7 @@ void attemptToBuyUpgrade(Upgrade upgrade) {
         upgrade.isToggledOn = true; // default to toggled on when purchased
         populateUnpurchasedUpgrades();
         populatePurchasedUpgrades();
+        maisyStartTalking(upgrade.maisyPurchaseLine);
         println("Upgrade purchased: " + upgrade.name);
     } else {
         println("Not enough rocks to purchase: " + upgrade.name);

@@ -50,14 +50,12 @@ float topLeftSideIconY() {
         
         switch(label) {
           case "upgrades":
-            menuOpen = Menu.UPGRADES;
+            openMenu(Menu.UPGRADES);
             break;
           case "settings":
-            menuOpen = Menu.SETTINGS;
+            openMenu(Menu.SETTINGS);
             break;
         }
-  
-        menuOpeningAnimationInProgress = true;
       }
     }
   }
