@@ -36,17 +36,6 @@ void saveData() {
   lines.add("oldScreenSize=" + width);
   lines.add("newScreenSize=" + newScreenSize);
   lines.add("newFrameRate=" + newFrameRate);
-  totalPlayTimeSeconds = (totalPlayTimeSeconds + (millis() - millisSinceLastSave) / 1000);
-  lines.add("playTime=" + totalPlayTimeSeconds);
-  // maisyPokeLinesIndexes as pipe-delimited (sorted in ascending order)
-  ArrayList<Integer> sortedIndexes = new ArrayList<Integer>(maisyPokeLinesIndexesRecieved);
-  Collections.sort(sortedIndexes);
-  String indexesLine = "";
-  for (Integer index : sortedIndexes) {
-    if (indexesLine.length() > 0) indexesLine += "|";
-    indexesLine += str(index);
-  }
-  lines.add("maisyPokeLinesIndexes=" + indexesLine);
   lines.add("[/vars]");
 
   // ---- rocks list ----
@@ -73,6 +62,21 @@ void saveData() {
     lines.add(rockType + "=" + rockClicksByType.get(rockType));
   }
   lines.add("[/rockClicks]");
+
+  // ---- statistics ----
+  lines.add("[statistics]");
+  totalPlayTimeSeconds = (totalPlayTimeSeconds + (millis() - millisSinceLastSave) / 1000);
+  lines.add("playTime=" + totalPlayTimeSeconds);
+  // maisyPokeLinesIndexes as pipe-delimited (sorted in ascending order)
+  ArrayList<Integer> sortedIndexes = new ArrayList<Integer>(maisyPokeLinesIndexesRecieved);
+  Collections.sort(sortedIndexes);
+  String indexesLine = "";
+  for (Integer index : sortedIndexes) {
+    if (indexesLine.length() > 0) indexesLine += "|";
+    indexesLine += str(index);
+  }
+  lines.add("maisyPokeLinesIndexes=" + indexesLine);
+  lines.add("[/statistics]");
 
   // ---- jeff haul state ----
   lines.add("[jeffHaul]");
@@ -152,6 +156,8 @@ void loadData() {
 void processSectionLines(String sectionName, ArrayList<String> lines) {
   if (sectionName.equals("vars")) {
     loadVarsSection(lines);
+  } else if (sectionName.equals("statistics")) {
+    loadStatisticsSection(lines);
   } else if (sectionName.equals("rocks")) {
     loadRocksSection(lines);
   } else if (sectionName.equals("upgrades")) {
@@ -190,7 +196,23 @@ void loadVarsSection(ArrayList<String> lines) {
       } else {
         setDefaultFrameRate();
       }
-    } else if (key.equals("playTime")) {
+    }
+  }
+
+  // After loading all vars, calculate screen areas
+  calculateScreenAreas();
+}
+
+// Load all variables from the statistics section
+void loadStatisticsSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    String[] parts = split(line, '=');
+    if (parts.length < 2) continue;
+
+    String key = parts[0];
+    String value = parts[1];
+
+    if (key.equals("playTime")) {
       totalPlayTimeSeconds = Long.parseLong(value);
     } else if (key.equals("maisyPokeLinesIndexes")) {
       String[] indexes = value.split("\\|");
@@ -205,9 +227,6 @@ void loadVarsSection(ArrayList<String> lines) {
       }
     }
   }
-
-  // After loading all vars, calculate screen areas
-  calculateScreenAreas();
 }
 
 // Load all rocks from the rocks section
