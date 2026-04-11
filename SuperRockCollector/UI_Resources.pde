@@ -4,6 +4,8 @@ PImage background;
 Dictionary<String, PImage> rockImages = new Hashtable<>();
 SoundFile rockPopSound;
 
+PImage[] rockHaulVariants;
+
 // Maisy
 PImage maisy1;
 PImage maisy2;
@@ -64,13 +66,21 @@ void loadUiImages() {
   buyButtonGrayscale2 = loadImage(dataPath("art/buy-button-2.png"));
   buyButtonGrayscale1.filter(GRAY);
   buyButtonGrayscale2.filter(GRAY);
-
   checkboxChecked = requestImage(dataPath("art/checkbox-checked.png"));
   checkboxUnchecked = requestImage(dataPath("art/checkbox-unchecked.png"));
+
+  loadRockHaulVariants();
 
   // left side icons
   upgradesButton1 = requestImage(dataPath("art/upgrades-icon-1.png"));
   upgradesButton2 = requestImage(dataPath("art/upgrades-icon-2.png"));
   settingsButton1 = requestImage(dataPath("art/settings-icon-1.png"));
   settingsButton2 = requestImage(dataPath("art/settings-icon-2.png"));
+}
+
+void loadRockHaulVariants() {
+  rockHaulVariants = new PImage[3];
+  for (int i = 0; i < rockHaulVariants.length; i++) {
+    rockHaulVariants[i] = requestImage(dataPath("art/rock-haul-variant-" + (i + 1) + ".png"));
+  }
 }

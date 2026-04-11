@@ -12,8 +12,8 @@ void drawBackgroundUi() {
   image(background, 0, 0, width, height);
 
   drawMaisy();
-  
   drawLeftSideIcons();
+  drawExtraUi();
 }
 
 // anything that's rendered in front of rocks
@@ -109,19 +109,27 @@ float getTextBlockHeight(String text, float textSize) {
 
 void calculateScreenAreas() {
   corner = width / 5.94;
+  float cornerDiv5 = corner / 5.0;
+  float cornerDiv7 = corner / 7.0;
+
   halfCorner = corner / 2;
   screenCenter = width / 2;
   farmCenter = (corner + width) / 2;
-  defaultMaisyTextSize = corner / 5;
+  defaultMaisyTextSize = cornerDiv5;
   maisyTextSize = defaultMaisyTextSize;
-  leftSideIconsTextSize = corner / 5;
+  leftSideIconsTextSize = cornerDiv5;
   menuCenterX = screenCenter;
   menuCenterY = farmCenter;
-  maxMenuSizeExtraPadding = corner / 7;
+  maxMenuSizeExtraPadding = cornerDiv7;
   maxMenuSizeX = width - maxMenuSizeExtraPadding;
   maxMenuSizeY = (width - corner) - maxMenuSizeExtraPadding;
   leftSideIconSize = corner * 0.8;
-  upgradeDescriptionTextSize = corner / 7;
+  upgradeDescriptionTextSize = cornerDiv7;
+
+  rockHaulImageSize = corner * 0.7;
+  rockHaulX = width / 3;
+  resetRockHaulCurrentY();
+  rockHaulTargetY = halfCorner;
   
   // Calculate icon Y positions based on order
   leftSideIconYPositions = new float[iconOrder.length];

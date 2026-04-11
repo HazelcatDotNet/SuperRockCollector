@@ -30,8 +30,7 @@ void draw() {
     }
     drawForegroundUi();
     attemptToSpawnRocks();
-    //drawMaisyHexagonHitbox();
-
+    checkForJeffHaul();
   } else {
     displayLoadingScreen();
     if (millis() >= loadEndTime) {
@@ -62,6 +61,7 @@ void mousePressed() {
     checkForRockClicks();
     checkForMaisyClick();
     checkForLeftSideIconClicks();
+    checkForRockHaulClicks();
   } else if (!menuOpeningAnimationInProgress) {
     checkForMenuClicks();
   }
@@ -70,11 +70,10 @@ void mousePressed() {
 void keyPressed() {
   if (key == 'd') {
     openMenu(Menu.DEBUG);
-    return;
-  }
-
-  if (key == 's') {
+  } else if (key == 's') {
     spawnRock(rollRockType());
+  } else if (key == 'h') {
+    triggerJeffHaul();
   }
 }
 

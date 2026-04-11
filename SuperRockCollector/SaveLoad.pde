@@ -38,8 +38,13 @@ void saveData() {
   lines.add("newFrameRate=" + newFrameRate);
   totalPlayTimeSeconds = (totalPlayTimeSeconds + (millis() - millisSinceLastSave) / 1000);
   lines.add("playTime=" + totalPlayTimeSeconds);
-  // add future simple variables here, e.g.:
-  //   lines.add("coins=" + coins);
+  // maisyPokeLinesIndexes as pipe-delimited
+  String indexesLine = "";
+  for (Integer index : maisyPokeLinesIndexesRecieved) {
+    if (indexesLine.length() > 0) indexesLine += "|";
+    indexesLine += str(index);
+  }
+  lines.add("maisyPokeLinesIndexes=" + indexesLine);
   lines.add("[/vars]");
 
   // ---- rocks list ----
@@ -54,17 +59,11 @@ void saveData() {
   for (String upgradeKey : upgradeOrder) {
     Upgrade upgrade = upgradesByKey.get(upgradeKey);
     if (upgrade != null) {
-      lines.add(upgradeKey + "|" + upgrade.toData());
+      lines.add(upgrade.toData());
     }
   }
   lines.add("[/upgrades]");
 
-  // ---- maisyPokeLinesIndexes list ----
-  lines.add("[maisyPokeLinesIndexes]");
-  for (Integer index : maisyPokeLinesIndexesRecieved) {
-    lines.add(str(index));
-  }
-  lines.add("[/maisyPokeLinesIndexes]");
 
   // ---- rock clicks by type ----
   lines.add("[rockClicks]");
@@ -72,6 +71,16 @@ void saveData() {
     lines.add(rockType + "=" + rockClicksByType.get(rockType));
   }
   lines.add("[/rockClicks]");
+
+  // ---- jeff haul state ----
+  lines.add("[jeffHaul]");
+  lines.add("millisOfNext=" + (isJeffHaulOnScreen() ? 0 : (millisOfNextJeffHaul - millis())));
+  lines.add("[/jeffHaul]");
+
+  // ---- debug variables ----
+  lines.add("[debug]");
+  lines.add("showRockHaulHitboxDebug=" + showRockHaulHitboxDebug);
+  lines.add("[/debug]");
 
   saveStrings(dataPath(SAVE_NAME), lines.toArray(new String[0]));
   println("[SaveLoad] Game saved. totalRocks=" + totalRocks
@@ -131,7 +140,7 @@ void loadData() {
   }
 
   populateUpgradeLists();
-    setUpgradeDescriptions();
+  setUpgradeDescriptions();
 
   println("[SaveLoad] Game loaded. totalRocks=" + totalRocks
           + ", rocks=" + rocks.size() + ", upgrades=" + upgradeOrder.length);
@@ -145,10 +154,12 @@ void processSectionLines(String sectionName, ArrayList<String> lines) {
     loadRocksSection(lines);
   } else if (sectionName.equals("upgrades")) {
     loadUpgradesSection(lines);
-  } else if (sectionName.equals("maisyPokeLinesIndexes")) {
-    loadMaisyPokeLinesIndexesSection(lines);
   } else if (sectionName.equals("rockClicks")) {
     loadRockClicksSection(lines);
+  } else if (sectionName.equals("jeffHaul")) {
+    loadJeffHaulSection(lines);
+  } else if (sectionName.equals("debug")) {
+    loadDebugSection(lines);
   }
 }
 
@@ -179,6 +190,17 @@ void loadVarsSection(ArrayList<String> lines) {
       }
     } else if (key.equals("playTime")) {
       totalPlayTimeSeconds = Long.parseLong(value);
+    } else if (key.equals("maisyPokeLinesIndexes")) {
+      String[] indexes = value.split("\\|");
+      for (String indexStr : indexes) {
+        if (indexStr.length() > 0) {
+          try {
+            maisyPokeLinesIndexesRecieved.add(Integer.parseInt(indexStr));
+          } catch (NumberFormatException e) {
+            println("[SaveLoad] Skipping malformed maisyPokeLinesIndex: " + indexStr);
+          }
+        }
+      }
     }
   }
 
@@ -210,16 +232,6 @@ void loadUpgradesSection(ArrayList<String> lines) {
   }
 }
 
-// Load maisyPokeLinesIndexes from the maisyPokeLinesIndexes section
-void loadMaisyPokeLinesIndexesSection(ArrayList<String> lines) {
-  for (String line : lines) {
-    try {
-      maisyPokeLinesIndexesRecieved.add(Integer.parseInt(line));
-    } catch (NumberFormatException e) {
-      println("[SaveLoad] Skipping malformed maisyPokeLinesIndex entry: " + line);
-    }
-  }
-}
 
 // Load rock clicks from the rockClicks section
 void loadRockClicksSection(ArrayList<String> lines) {
@@ -233,6 +245,47 @@ void loadRockClicksSection(ArrayList<String> lines) {
       rockClicksByType.put(rockType, clickCount);
     } catch (Exception e) {
       println("[SaveLoad] Skipping malformed rockClicks entry: " + line);
+    }
+  }
+}
+
+// Load jeff haul state from the jeffHaul section
+void loadJeffHaulSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    try {
+      String[] parts = split(line, '=');
+      if (parts.length < 2) continue;
+      
+      String key = parts[0];
+      String value = parts[1];
+      
+      if (key.equals("millisOfNext")) {
+        int millisUntil = Integer.parseInt(value);
+        millisOfNextJeffHaul = millis() + millisUntil;
+      }
+
+    } catch (Exception e) {
+      println("[SaveLoad] Skipping malformed jeffHaul entry: " + line);
+    }
+  }
+}
+
+// Load debug variables from the debug section
+void loadDebugSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    try {
+      String[] parts = split(line, '=');
+      if (parts.length < 2) continue;
+      
+      String key = parts[0];
+      String value = parts[1];
+      
+      if (key.equals("showRockHaulHitboxDebug")) {
+        showRockHaulHitboxDebug = Boolean.parseBoolean(value);
+      }
+
+    } catch (Exception e) {
+      println("[SaveLoad] Skipping malformed debug entry: " + line);
     }
   }
 }
@@ -276,9 +329,9 @@ Rock rockFromData(String line) {
 void upgradeFromData(String line) {
   String[] parts = line.split("\\|");
   
-  if (parts.length < 4) {
+  if (parts.length < 3) {
     throw new RuntimeException(
-      "[upgradeFromData] Expected at least 4 fields (key|name|hasPurchased|isToggledOn), got "
+      "[upgradeFromData] Expected at least 3 fields (key|hasPurchased|isToggledOn), got "
       + parts.length + " in: " + line
     );
   }
@@ -286,7 +339,7 @@ void upgradeFromData(String line) {
   String upgradeKey = parts[0];
   Upgrade upgrade = upgradesByKey.get(upgradeKey);
   if (upgrade != null) {
-    upgrade.fromData(line.substring(line.indexOf('|') + 1)); // pass everything after the key
+    upgrade.fromData(line);
   } else {
     println("[upgradeFromData] Warning: Upgrade key '" + upgradeKey + "' not found in upgradesByKey");
   }

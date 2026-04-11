@@ -3,6 +3,8 @@ long millisSinceLastSave;
 float loadingSpinnerAngle = random(TWO_PI);
 int loadEndTime;
 
+int millisOfNextJeffHaul;
+
 int lastXinYCheck = 0;
 int lastMaisySwitch = 0;
 

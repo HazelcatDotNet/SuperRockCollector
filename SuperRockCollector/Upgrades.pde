@@ -5,14 +5,17 @@ String[] purchasedUpgradesOrder;
 String[] unpurchasedUpgradesOrder;
 HashMap<String, Upgrade> upgradesByKey;
 
+Upgrade deneutralizerUpgrade;
+Upgrade jeffUpgrade;
+
 void loadUpgrades() {
     upgrades = new ArrayList<Upgrade>();
     upgradesByKey = new HashMap<String, Upgrade>();
 
     /*
         Template:
-
-        Upgrade exampleName = new Upgrade("key");
+        Upgrade exampleName;
+        exampleName = new Upgrade("key");
         exampleName.setCost(100);
         exampleName.setName("ExampleName");
         exampleName.setDescription("Description");
@@ -21,17 +24,17 @@ void loadUpgrades() {
         don't forget to add to upgradeOrder!
     */
     
-    Upgrade deneutralizer = new Upgrade("deneutralizer");
-    deneutralizer.setCost(100);
-    deneutralizer.setName("Localized Temporal Deneutralizer");
-    deneutralizer.setDescription("This wacky artifact allows abnormal rocks to spawn!");
-    deneutralizer.setMaisyPurchaseLine("Ooh, the deneutralizer! Im sure wondrous things will come from this. / Let me know what kinds of new rocks you find!");
+    deneutralizerUpgrade = new Upgrade("deneutralizer");
+    deneutralizerUpgrade.setCost(100);
+    deneutralizerUpgrade.setName("Localized Temporal Deneutralizer");
+    deneutralizerUpgrade.setDescription("This wacky artifact allows abnormal rocks to spawn!");
+    deneutralizerUpgrade.setMaisyPurchaseLine("Ooh, the deneutralizer! Im sure wondrous things will come from this. / Let me know what kinds of new rocks you find!");
     
-    Upgrade deneutralizer2 = new Upgrade("jeff");
-    deneutralizer2.setCost(200);
-    deneutralizer2.setName("Jeff");
-    deneutralizer2.setDescription("Silly dog who will bring you rocks from time to time!");
-    deneutralizer2.setMaisyPurchaseLine("hey, that's jeff! he's good at finding rocks. / I'm a bit scared of dogs, though...");
+    jeffUpgrade = new Upgrade("jeff");
+    jeffUpgrade.setCost(200);
+    jeffUpgrade.setName("Jeff");
+    jeffUpgrade.setDescription("Silly dog who will bring you rocks from time to time!");
+    jeffUpgrade.setMaisyPurchaseLine("hey, that's jeff! he's good at finding rocks. / I'm a bit scared of dogs, though...");
 }
 
 void setUpgradeDescriptions() {
@@ -43,6 +46,7 @@ void setUpgradeDescriptions() {
 
 class Upgrade {
     String name;
+    String key;
     int cost;
     String description;
     String maisyPurchaseLine; // if this upgrade has a special line that Maisy says when bought, it goes here (otherwise null)
@@ -58,6 +62,7 @@ class Upgrade {
         setImages(upgradeKey);
         upgrades.add(this);
         upgradesByKey.put(upgradeKey, this);
+        this.key = upgradeKey;
     }
 
     void setImages(String baseImageString) {
@@ -102,7 +107,7 @@ class Upgrade {
 
     // Save upgrade state as a pipe-delimited string: key|hasPurchased|isToggledOn
     String toData() {
-        return name + "|" + hasPurchased + "|" + isToggledOn;
+        return key + "|" + hasPurchased + "|" + isToggledOn;
     }
 
     // Load upgrade state from a pipe-delimited string
@@ -139,17 +144,26 @@ void attemptToBuyUpgrade(Upgrade upgrade) {
         populateUnpurchasedUpgrades();
         populatePurchasedUpgrades();
         maisyStartTalking(upgrade.maisyPurchaseLine);
+        checkSpecialUpgradePurchaseEvents(upgrade);
         println("Upgrade purchased: " + upgrade.name);
     } else {
         println("Not enough rocks to purchase: " + upgrade.name);
     }
 }
 
+void checkSpecialUpgradePurchaseEvents(Upgrade upgrade) {
+    if (upgrade.key == "jeff") {
+        setNextJeffHaulTime();
+    }
+}
+
+// Populate the list of all upgrades based on their purchase status
 void populateUpgradeLists() {
     populateUnpurchasedUpgrades();
     populatePurchasedUpgrades();
 }
 
+// Populate the list of upgrades that have not been purchased
 void populateUnpurchasedUpgrades() {
     ArrayList<String> unpurchased = new ArrayList<String>();
     for (String upgradeKey : upgradeOrder) {
@@ -161,13 +175,58 @@ void populateUnpurchasedUpgrades() {
     unpurchasedUpgradesOrder = unpurchased.toArray(new String[0]);
 }
 
-  void populatePurchasedUpgrades() {
+// Populate the list of upgrades that have been purchased
+void populatePurchasedUpgrades() {
     ArrayList<String> purchased = new ArrayList<String>();
     for (String upgradeKey : upgradeOrder) {
-      Upgrade upgrade = upgradesByKey.get(upgradeKey);
-      if (upgrade != null && upgrade.hasPurchased) {
+        Upgrade upgrade = upgradesByKey.get(upgradeKey);
+        if (upgrade != null && upgrade.hasPurchased) {
         purchased.add(upgradeKey);
-      }
+        }
     }
     purchasedUpgradesOrder = purchased.toArray(new String[0]);
+}
+// Set the time for the next Jeff Haul
+void setNextJeffHaulTime() {
+    // defaults to a random time between 6 and 12 minutes
+    millisOfNextJeffHaul = millis() + int(random(360000, 720000));
+    println("Next Jeff Haul in " + ((millisOfNextJeffHaul - millis()) / 1000) + " seconds.");
+}
+
+void checkForJeffHaul() {
+    if (!jeffUpgrade.isToggledOn) return;
+    if (isJeffHaulOnScreen()) return;
+
+    if (millis() >= millisOfNextJeffHaul) {
+        triggerJeffHaul();
+    }
+}
+
+void triggerJeffHaul() {
+    resetJeffHaulVars();
+    setRandomRockHaulVariant();
+    rockHaulRotationDirection = random(1) < 0.5 ? 1 : -1;  // randomly choose clockwise or counterclockwise
+    rockHaulTargetRotation = TAU * 0.1 * rockHaulRotationDirection;
+    jeffHaulAnimationInProgress = true;
+    println("Jeff Haul triggered!");
+}
+
+void resetJeffHaulVars() {
+    jeffHaulAnimationInProgress = false;
+    jeffHaulWaitingForPickup = false;
+    resetRockHaulCurrentY();
+    rockHaulCurrentRotation = 0;  // reset rotation when animation completes
+    rockHaulTargetRotation = 0;
+}
+
+void collectRockHaul() {
+    int minRocks = 20;
+    int maxRocks = 40;
+
+    int rocksCollected = int(random(minRocks, maxRocks + 1)); // collect between 20 and 40 rocks
+    totalRocks += rocksCollected;
+
+    resetJeffHaulVars();
+    setNextJeffHaulTime();
+    println("Collected " + rocksCollected + " rocks from Jeff Haul!");
 }
