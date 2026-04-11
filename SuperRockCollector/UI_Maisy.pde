@@ -23,14 +23,18 @@ void checkForMaisyClick() {
     int index = int(random(maisyPokeLines.length));
     if (DEBUG_MAISY_LINE > 0) index = DEBUG_MAISY_LINE - 1; // defined line number for debugging
 
-    if (!maisyPokeLinesIndexesRecieved.contains(index)) {
-      maisyPokeLinesIndexesRecieved.add(index);
-    }
+    addMaisyLineToIndexesRecieved(index);
     
     maisyTalkingTextLines = new ArrayList<String>(Arrays.asList(maisyPokeLines[index].split(" / ")));
     String maisyLine = getNextMaisyLine(index + 1);
     maisyStartTalking(maisyLine);
   } 
+}
+
+void addMaisyLineToIndexesRecieved(int index) {
+  if (!maisyPokeLinesIndexesRecieved.contains(index)) {
+    maisyPokeLinesIndexesRecieved.add(index);
+  }
 }
 
 // if a maisy monologue line starts with {x}, temporarily set the text size to regular * x

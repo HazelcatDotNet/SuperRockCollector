@@ -38,9 +38,11 @@ void saveData() {
   lines.add("newFrameRate=" + newFrameRate);
   totalPlayTimeSeconds = (totalPlayTimeSeconds + (millis() - millisSinceLastSave) / 1000);
   lines.add("playTime=" + totalPlayTimeSeconds);
-  // maisyPokeLinesIndexes as pipe-delimited
+  // maisyPokeLinesIndexes as pipe-delimited (sorted in ascending order)
+  ArrayList<Integer> sortedIndexes = new ArrayList<Integer>(maisyPokeLinesIndexesRecieved);
+  Collections.sort(sortedIndexes);
   String indexesLine = "";
-  for (Integer index : maisyPokeLinesIndexesRecieved) {
+  for (Integer index : sortedIndexes) {
     if (indexesLine.length() > 0) indexesLine += "|";
     indexesLine += str(index);
   }

@@ -26,6 +26,10 @@ float debugToggleHitboxButtonX;
 float debugToggleHitboxButtonY;
 float debugToggleHitboxButtonSize;
 
+float debugLastMaisyDialogButtonX;
+float debugLastMaisyDialogButtonY;
+float debugLastMaisyDialogButtonSize;
+
 void drawDebugMenu() {
   fill(0, 0, 0);
   textAlign(CENTER, CENTER);
@@ -44,6 +48,7 @@ void drawDebugMenu() {
   drawClearRocksButton(startX + buttonSize * 6, startY, buttonSize);
   drawSetZeroRocksButton(startX + buttonSize * 7.5, startY, buttonSize);
   drawToggleHitboxButton(startX + buttonSize * 9, startY, buttonSize);
+  drawLastMaisyDialogButton(startX + buttonSize * 10.5, startY, buttonSize);
 }
 
 void drawDebugButton(float x, float y, float size, String text) {
@@ -114,6 +119,14 @@ void drawToggleHitboxButton(float posX, float posY, float buttonSize) {
   drawDebugButton(posX, posY, buttonSize, showRockHaulHitboxDebug ? "hide\nhitbox" : "show\nhitbox");
 }
 
+void drawLastMaisyDialogButton(float posX, float posY, float buttonSize) {
+  debugLastMaisyDialogButtonX = posX;
+  debugLastMaisyDialogButtonY = posY;
+  debugLastMaisyDialogButtonSize = buttonSize;
+  
+  drawDebugButton(posX, posY, buttonSize, "last\nmaisy");
+}
+
 void checkForDebugMenuClicks() {
   float halfAdd100RocksButtonSize = debugAdd100RocksButtonSize / 2;
   
@@ -176,6 +189,19 @@ void checkForDebugMenuClicks() {
       mouseY >= debugToggleHitboxButtonY - halfToggleHitboxButtonSize && mouseY <= debugToggleHitboxButtonY + halfToggleHitboxButtonSize) {
     showRockHaulHitboxDebug = !showRockHaulHitboxDebug;
     println("DEBUG: Hitbox debug toggled to " + showRockHaulHitboxDebug);
+  }
+  
+  float halfLastMaisyDialogButtonSize = debugLastMaisyDialogButtonSize / 2;
+  
+  // Check if "Last Maisy Dialog" button was clicked
+  if (mouseX >= debugLastMaisyDialogButtonX - halfLastMaisyDialogButtonSize && mouseX <= debugLastMaisyDialogButtonX + halfLastMaisyDialogButtonSize &&
+      mouseY >= debugLastMaisyDialogButtonY - halfLastMaisyDialogButtonSize && mouseY <= debugLastMaisyDialogButtonY + halfLastMaisyDialogButtonSize) {
+    int lastIndex = maisyPokeLines.length - 1;
+    addMaisyLineToIndexesRecieved(lastIndex);
+    maisyTalkingTextLines = new ArrayList<String>(Arrays.asList(maisyPokeLines[lastIndex].split(" / ")));
+    String maisyLine = getNextMaisyLine(lastIndex + 1);
+    maisyStartTalking(maisyLine);
+    println("DEBUG: Playing last Maisy dialog (line " + (lastIndex + 1) + ")");
   }
 }
 
