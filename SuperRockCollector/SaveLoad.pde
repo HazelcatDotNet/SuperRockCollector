@@ -341,6 +341,11 @@ Rock rockFromData(String line) {
     r.waitDuration = int(p[11]);
   }
 
+  // Load rock-type specific data from field 12
+  if (r instanceof CaffeinatedRock && !p[12].equals("placeholder")) {
+    ((CaffeinatedRock) r).setWillExplodeOnClick(boolean(p[12]));
+  }
+
   r.setImage();                        // restore image after loading
   r.setLocation(r.loc.x, r.loc.y);    // recalculate edges
 

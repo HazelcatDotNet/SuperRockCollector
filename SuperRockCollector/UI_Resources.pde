@@ -3,6 +3,7 @@ PImage background;
 // Rocks
 Dictionary<String, PImage> rockImages = new Hashtable<>();
 SoundFile rockPopSound;
+PImage[] rockExplosionFrames;
 
 PImage[] rockHaulVariants;
 
@@ -69,6 +70,7 @@ void loadUiImages() {
   checkboxUnchecked = requestImage(dataPath("art/checkbox-unchecked.png"));
 
   loadRockHaulVariants();
+  loadRockExplosionFrames();
 
   // left side icons
   upgradesButton1 = requestImage(dataPath("art/upgrades-icon-1.png"));
@@ -78,8 +80,27 @@ void loadUiImages() {
 }
 
 void loadRockHaulVariants() {
-  rockHaulVariants = new PImage[3];
-  for (int i = 0; i < rockHaulVariants.length; i++) {
-    rockHaulVariants[i] = requestImage(dataPath("art/rock-haul-variant-" + (i + 1) + ".png"));
+  ArrayList<PImage> variants = new ArrayList<PImage>();
+  int i = 1;
+  while (true) {
+    String path = dataPath("art/rock-haul-variants/rock-haul-variant-" + i + ".png");
+    File f = new File(path);
+    if (!f.exists()) break;
+    variants.add(requestImage(path));
+    i++;
   }
+  rockHaulVariants = variants.toArray(new PImage[0]);
+}
+
+void loadRockExplosionFrames() {
+  ArrayList<PImage> frames = new ArrayList<PImage>();
+  int i = 1;
+  while (true) {
+    String path = dataPath("art/rock-explosion/rock-explosion-" + i + ".png");
+    File f = new File(path);
+    if (!f.exists()) break;
+    frames.add(requestImage(path));
+    i++;
+  }
+  rockExplosionFrames = frames.toArray(new PImage[0]);
 }

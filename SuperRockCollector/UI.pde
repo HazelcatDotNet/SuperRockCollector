@@ -6,6 +6,28 @@ float halfCorner;
 color positiveGreen = color(60, 212, 76);
 color negativeRed = color(214, 78, 68);
 
+ArrayList<RockExplosion> activeExplosions = new ArrayList<RockExplosion>();
+
+class RockExplosion {
+  float x, y, size;
+  float startTime;
+  float speedMultiplier;
+  
+  RockExplosion(float x, float y, float size, float speedMultiplier) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.speedMultiplier = speedMultiplier;
+    this.startTime = millis();
+  }
+  
+  boolean isFinished() {
+    float msPerFrame = 100 / speedMultiplier;
+    float totalDuration = msPerFrame * rockExplosionFrames.length;
+    return (millis() - startTime) > totalDuration;
+  }
+}
+
 void drawBackgroundUi() {
   background(255);
   imageMode(CORNER);
@@ -13,6 +35,7 @@ void drawBackgroundUi() {
 
   drawMaisy();
   drawLeftSideIcons();
+  updateAndDrawExplosions();
   drawExtraUi();
 }
 
@@ -105,6 +128,36 @@ float getTextBlockHeight(String text, float textSize) {
   // Add line spacing multiplier to account for padding between lines
   float lineSpacingMultiplier = 1.1;
   return lineCount * lineHeight * lineSpacingMultiplier;
+}
+
+void drawRockExplosion(float x, float y, float size, float elapsedMillis) {
+  drawRockExplosion(x, y, size, elapsedMillis, 1.0);
+}
+
+void drawRockExplosion(float x, float y, float size, float elapsedMillis, float speedMultiplier) {
+  if (rockExplosionFrames.length == 0) return;
+  
+  // Calculate milliseconds per frame (100ms base)
+  float msPerFrame = 100 / speedMultiplier;
+  
+  // Calculate current frame
+  int frameIndex = (int)(elapsedMillis / msPerFrame) % rockExplosionFrames.length;
+  
+  imageMode(CENTER);
+  image(rockExplosionFrames[frameIndex], x, y, size, size);
+}
+
+void updateAndDrawExplosions() {
+  for (int i = activeExplosions.size() - 1; i >= 0; i--) {
+    RockExplosion exp = activeExplosions.get(i);
+    
+    if (exp.isFinished()) {
+      activeExplosions.remove(i);
+    } else {
+      float elapsed = millis() - exp.startTime;
+      drawRockExplosion(exp.x, exp.y, exp.size, elapsed, exp.speedMultiplier);
+    }
+  }
 }
 
 void calculateScreenAreas() {

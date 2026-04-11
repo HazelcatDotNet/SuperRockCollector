@@ -213,7 +213,7 @@ void checkForJeffHaul() {
 void triggerJeffHaul() {
     resetJeffHaulVars();
     setRandomRockHaulVariant();
-    rockHaulRotationDirection = random(1) < 0.5 ? 1 : -1;  // randomly choose clockwise or counterclockwise
+    rockHaulRotationDirection = runChance(0.5) ? 1 : -1;  // randomly choose clockwise or counterclockwise
     rockHaulTargetRotation = TAU * 0.1 * rockHaulRotationDirection;
     jeffHaulAnimationInProgress = true;
     println("Jeff Haul triggered!");

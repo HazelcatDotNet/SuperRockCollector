@@ -18,6 +18,6 @@ class LizardRock extends Rock {
     
     // 20% chance of giving 2 rocks - otherwise, 1
     float chanceOfGivingExtraRock = 0.2;
-    return random(1) < chanceOfGivingExtraRock ? 2 : 1;
+    return runChance(chanceOfGivingExtraRock) ? 2 : 1;
   }
 }

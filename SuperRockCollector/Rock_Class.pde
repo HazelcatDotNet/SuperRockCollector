@@ -5,7 +5,7 @@ public enum RockType {
 }
 
 // the number of Rock fields we save the data of
-final int ROCK_FIELD_COUNT = 12;
+final int ROCK_FIELD_COUNT = 13;
 
 public class Rock {
   
@@ -129,8 +129,18 @@ public class Rock {
     // Track the click for this rock type
     rockClicksByType.put(rockType, rockClicksByType.get(rockType) + 1);
 
+    if (shouldDestroyOnClick()) {
+      rocks.remove(this);
+      onDestroy();
+    }
+
     return rocksCollectedUponClick();
   }
+
+  void onDestroy() {
+    return;
+  }
+
   
   int rocksCollectedUponClick() {
     return 1;
@@ -187,8 +197,12 @@ public class Rock {
   // Field order (pipe-delimited):
   // 0:id | 1:rockType | 2:rockFileName | 3:loc.x | 4:loc.y |
   // 5:dest.x | 6:dest.y | 7:speed | 8:sizeX | 9:sizeY |
-  // 10:waitingToMove | 11:waitDuration
+  // 10:waitingToMove | 11:waitDuration | 12:typeSpecificData
   final String DELIM = "|";
+
+  String getTypeSpecificData() {
+    return "placeholder";
+  }
 
   String toData() {
     return id                                      + DELIM +
@@ -202,7 +216,8 @@ public class Rock {
            sizeX                                   + DELIM +
            sizeY                                   + DELIM +
            waitingToMove                           + DELIM +
-           (waitingToMove ? waitDuration : 0);
+           (waitingToMove ? waitDuration : 0)     + DELIM +
+           getTypeSpecificData();
   }
   
 }

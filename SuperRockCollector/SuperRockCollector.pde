@@ -82,7 +82,7 @@ void keyPressed() {
 boolean xChanceInYSeconds(int x, int y) {
   if (millis() - lastXinYCheck >= 1000) {
     lastXinYCheck = millis();
-    return random(1) < (float)x / y;
+    return runChance((float) x / y);
   }
   return false;
 }
@@ -105,4 +105,9 @@ boolean intervalMs(int numMillis) {
   int intervalFrames = int((numMillis / 1000.0) * frameRate);
   if (frameCount % intervalFrames == 0) return true;
   return false;
+}
+
+// runs a dice roll. e.g., with a proportionChance of 0.3, there is a 30% chance of returning true
+boolean runChance(float proportionChance) {
+  return random(1) < proportionChance;
 }

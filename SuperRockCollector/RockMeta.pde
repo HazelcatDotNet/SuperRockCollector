@@ -37,10 +37,6 @@ void checkForRockClicks() {
       rocks.remove(i);
       totalRocks += rock.onClick();
       
-      if (rock.shouldDestroyOnClick()) {
-        rock = null;
-      }
-      
       // return after the rock click, because only one rock can be clicked per click
       return;
     }
@@ -92,6 +88,14 @@ void spawnXRandomRocks(int x) {
   for (int i = 0; i < x; i++) {
     spawnRock(rollRockType());
   }
+}
+
+void startRockExplosion(float x, float y, float size) {
+  startRockExplosion(x, y, size, 1.0);
+}
+
+void startRockExplosion(float x, float y, float size, float speedMultiplier) {
+  activeExplosions.add(new RockExplosion(x, y, size, speedMultiplier));
 }
 
 Rock newRockOfType(RockType rockType) {
