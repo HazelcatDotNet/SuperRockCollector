@@ -34,7 +34,6 @@ PImage upgradesButton2;
 PImage settingsButton1;
 PImage settingsButton2;
 
-
 void loadLoadingSpinner() {
   loadingSpinner = loadImage(dataPath("art/loading-spinner.png"));
 }

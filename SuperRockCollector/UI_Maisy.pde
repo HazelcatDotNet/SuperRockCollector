@@ -1,4 +1,4 @@
-int maisyTextLineCharLimit = 23;
+int maisyTextLineCharLimit = 24;
 int maisySoundsRemaining;
 int maisyTalkSoundMsInterval = 130;
 int maisyShouldStopTalkingMillis;

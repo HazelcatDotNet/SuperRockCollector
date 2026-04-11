@@ -1,12 +1,13 @@
 // Upgrades
 ArrayList<Upgrade> upgrades;
-String[] upgradeOrder = {"deneutralizer", "jeff"};
+String[] upgradeOrder = {"deneutralizer", "jeff", "reptile-radar"};
 String[] purchasedUpgradesOrder;
 String[] unpurchasedUpgradesOrder;
 HashMap<String, Upgrade> upgradesByKey;
 
 Upgrade deneutralizerUpgrade;
 Upgrade jeffUpgrade;
+Upgrade reptileRadarUpgrade;
 
 void loadUpgrades() {
     upgrades = new ArrayList<Upgrade>();
@@ -28,13 +29,20 @@ void loadUpgrades() {
     deneutralizerUpgrade.setCost(100);
     deneutralizerUpgrade.setName("Localized Temporal Deneutralizer");
     deneutralizerUpgrade.setDescription("This wacky artifact allows abnormal rocks to spawn!");
-    deneutralizerUpgrade.setMaisyPurchaseLine("Ooh, the deneutralizer! Im sure wondrous things will come from this. / Let me know what kinds of new rocks you find!");
+    deneutralizerUpgrade.setMaisyPurchaseLine("ooh, the deneutralizer! i'm sure wondrous things will come from it. / let me know what kinds of new rocks you find!");
     
     jeffUpgrade = new Upgrade("jeff");
     jeffUpgrade.setCost(200);
     jeffUpgrade.setName("Jeff");
     jeffUpgrade.setDescription("Silly dog who will bring you rocks from time to time!");
-    jeffUpgrade.setMaisyPurchaseLine("hey, that's jeff! he's good at finding rocks. / I'm a bit scared of dogs, though...");
+    jeffUpgrade.setMaisyPurchaseLine("hey, that's jeff! he's good at finding rocks. / i'm a bit scared of dogs, though...");
+
+    reptileRadarUpgrade = new Upgrade("reptile-radar");
+    reptileRadarUpgrade.setCost(300);
+    reptileRadarUpgrade.setName("Reptile Radar");
+    reptileRadarUpgrade.setDescription("Highlights those sneaky Lizard Rocks, making them less transparent!");
+    reptileRadarUpgrade.setMaisyPurchaseLine("who even made this thing? it's making all sorts of funny noises.");
+
 }
 
 void setUpgradeDescriptions() {
@@ -98,7 +106,7 @@ class Upgrade {
     }
 
     void setWrappedDescription() {
-        description = wrapText(description, floor(corner * 0.5));
+        description = wrapText(description, floor(corner * 0.45));
     }
 
     void setMaisyPurchaseLine(String line) {

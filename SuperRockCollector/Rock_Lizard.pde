@@ -6,6 +6,11 @@ class LizardRock extends Rock {
   }
   
   @Override void setRockOpacity() {
+    if (reptileRadarUpgrade.isToggledOn) {
+      setDrawOpacity(70);
+      return;
+    }
+
     setDrawOpacity(20);
   }
   
