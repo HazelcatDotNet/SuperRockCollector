@@ -1,7 +1,7 @@
-class StandardRock extends Rock {
-  StandardRock() {
-    rockType = RockType.STANDARD;
-    rockFileName = "standard";
+class HardyRock extends Rock {
+  HardyRock() {
+    rockType = RockType.HARDY;
+    rockFileName = "hardy";
     super.setImage();
   }
 }

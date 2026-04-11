@@ -1,7 +1,7 @@
 class LizardRock extends Rock {
   LizardRock() {
     rockType = RockType.LIZARD;
-    rockFileName = "standard";
+    rockFileName = "hardy";
     super.setImage();
   }
   

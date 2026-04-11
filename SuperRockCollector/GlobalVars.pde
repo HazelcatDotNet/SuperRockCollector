@@ -9,7 +9,7 @@ int lastXinYCheck = 0;
 int lastMaisySwitch = 0;
 
 public enum RockType {
-  STANDARD,
+  HARDY,
   LIZARD;
 }
 

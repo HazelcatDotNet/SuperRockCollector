@@ -21,7 +21,7 @@ boolean mouseOnMaisy() {
 void checkForMaisyClick() {
   if (mouseOnMaisy() && !maisyIsTalking) {
     int index = int(random(maisyPokeLines.length));
-    //index = 34 - 1; // defined line number for debugging
+    if (DEBUG_MAISY_LINE > 0) index = DEBUG_MAISY_LINE - 1; // defined line number for debugging
 
     if (!maisyPokeLinesIndexesRecieved.contains(index)) {
       maisyPokeLinesIndexesRecieved.add(index);

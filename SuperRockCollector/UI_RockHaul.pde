@@ -53,7 +53,6 @@ void checkForRockHaulClicks() {
     if (!isJeffHaulOnScreen()) return;
     if (isMouseOverRockHaul()) {
         collectRockHaul();
-        println("3");
     }
 }
 

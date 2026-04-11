@@ -5,6 +5,8 @@ ArrayList<String> maisyTalkingTextLines = new ArrayList<String>();
 String maisyTalkingText = "";
 int maisyTalkingLinesIndex;
 
+final int DEBUG_MAISY_LINE = 0;
+
 String getNextMaisyLine(int lineNumber) {
   String maisyLine = maisyTalkingTextLines.remove(0);
   
@@ -35,13 +37,13 @@ String checkForSpecialPokeText(String maisyLine,int l) {
     }
     maisyLine = maisyLine.replace("x", str(numRocks));
     
-    // remove all standard rocks from the screen
+    // remove all hardy rocks from the screen
   } else if (l == 24) {
     Iterator<Rock> it = rocks.iterator();
     
     while (it.hasNext()) {
       Rock r = it.next();
-      if (r.rockType == RockType.STANDARD) {
+      if (r.rockType == RockType.HARDY) {
         it.remove();
       }
     }
