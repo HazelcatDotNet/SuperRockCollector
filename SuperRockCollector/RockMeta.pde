@@ -8,7 +8,7 @@
 - add the rock type to newRockOfType in RockMeta
 - add the rock type to rollRockType in RockMeta, with appropriate weighting
 */
-String[] rockFileNames = { "hardy" };
+String[] rockFileNames = { "hardy", "caffeinated" };
 
 void initializeRockClickTracking() {
   for (RockType type : RockType.values()) {
@@ -59,8 +59,9 @@ RockType rollRockType() {
   if (!upgradesByKey.get("deneutralizer").isToggledOn) return RockType.HARDY;
 
   HashMap<RockType, Integer> typeWeights = new LinkedHashMap<RockType, Integer>();
-  typeWeights.put(RockType.HARDY, 5);
-  typeWeights.put(RockType.LIZARD, 1);
+  typeWeights.put(RockType.HARDY, 10);
+  typeWeights.put(RockType.LIZARD, 3);
+  typeWeights.put(RockType.CAFFEINATED, 2);
   
   int total = 0;
   for (int weight : typeWeights.values()) {
@@ -96,6 +97,7 @@ void spawnXRandomRocks(int x) {
 Rock newRockOfType(RockType rockType) {
   switch (rockType) {
     case LIZARD: return new LizardRock();
+    case CAFFEINATED: return new CaffeinatedRock();
     default:     return new HardyRock();
   }
 }

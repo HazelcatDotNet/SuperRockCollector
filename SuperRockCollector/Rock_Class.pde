@@ -1,3 +1,9 @@
+public enum RockType {
+  HARDY,
+  LIZARD,
+  CAFFEINATED;
+}
+
 // the number of Rock fields we save the data of
 final int ROCK_FIELD_COUNT = 12;
 
@@ -47,9 +53,18 @@ public class Rock {
     rectMode(CENTER);
     imageMode(CENTER);
     setRockOpacity();
-    image(img, loc.x, loc.y, sizeX, sizeY);
+    image(img, renderLocationX(), renderLocationY(), sizeX, sizeY);
     setDrawOpacity(255);
   }
+
+  float renderLocationX() {
+    return loc.x;
+  }
+
+  float renderLocationY() {
+    return loc.y;
+  }
+
   
   void setRockOpacity() {
     setDrawOpacity(255);

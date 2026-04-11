@@ -141,4 +141,11 @@ void calculateScreenAreas() {
   menuTopRightCornerX = menuCenterX + (maxMenuSizeX / 2) - (halfCorner / 4);
   menuTopRightCornerY = menuCenterY - (maxMenuSizeY / 2) + (halfCorner / 4);
   menuXOutButtonSize = corner / 2.5;
+  
+  // Update vibration amplitude for all caffeinated rocks
+  for (Rock rock : rocks) {
+    if (rock instanceof CaffeinatedRock) {
+      ((CaffeinatedRock) rock).setScreenScaledAmplitude();
+    }
+  }
 }

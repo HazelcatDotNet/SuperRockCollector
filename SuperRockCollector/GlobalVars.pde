@@ -8,11 +8,6 @@ int millisOfNextJeffHaul;
 int lastXinYCheck = 0;
 int lastMaisySwitch = 0;
 
-public enum RockType {
-  HARDY,
-  LIZARD;
-}
-
 Random random = new Random();
 int lastSecondTime;
 

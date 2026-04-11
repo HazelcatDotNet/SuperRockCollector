@@ -6,7 +6,7 @@ class LizardRock extends Rock {
   }
   
   @Override void setRockOpacity() {
-    setDrawOpacity(80);
+    setDrawOpacity(20);
   }
   
   @Override int rocksCollectedUponClick() {
