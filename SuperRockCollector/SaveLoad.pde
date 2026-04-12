@@ -33,9 +33,12 @@ void saveData() {
   // ---- simple variables ----
   lines.add("[vars]");
   lines.add("totalRocks=" + totalRocks);
+  saveId = getSaveId();
+  lines.add("saveId=" + saveId);
   lines.add("oldScreenSize=" + width);
   lines.add("newScreenSize=" + newScreenSize);
   lines.add("newFrameRate=" + newFrameRate);
+  // add new simple variables here
   lines.add("[/vars]");
 
   // ---- rocks list ----
@@ -191,6 +194,9 @@ void loadVarsSection(ArrayList<String> lines) {
 
     if (key.equals("totalRocks")) {
       totalRocks = Long.parseLong(value);
+    } else if (key.equals("saveId")) {
+      saveId = value;
+      if (!getSaveId().equals(saveId)) playerEditedTotalRocksInSave = true;
     } else if (key.equals("oldScreenSize")) {
       oldScreenSize = int(value);
     } else if (key.equals("newScreenSize")) {

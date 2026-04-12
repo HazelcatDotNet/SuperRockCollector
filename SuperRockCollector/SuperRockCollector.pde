@@ -21,6 +21,7 @@ void setup() {
   loadData();
   
   loadEndTime = millis() + 1500;
+  if (playerEditedTotalRocksInSave) maisyStartTalking("y'know, something seems off about your total rock count... hm... / it's probably nothing, i think i'm just hallucinating again.");
 }
 
 void draw() {
@@ -113,4 +114,21 @@ boolean intervalMs(int numMillis) {
 // runs a dice roll. e.g., with a proportionChance of 0.3, there is a 30% chance of returning true
 boolean runChance(float proportionChance) {
   return random(1) < proportionChance;
+}
+
+String randomNumberString(int length) {
+  return random.ints(length, '0', '9' + 1)
+    .collect(StringBuilder::new,
+      StringBuilder::appendCodePoint,
+      StringBuilder::append)
+    .toString();
+}
+
+String getSaveId() {
+  String idString = str((totalRocks + 17) * 3);
+  int dotIndex = idString.indexOf('.');
+  if (dotIndex != -1) {
+    idString = idString.substring(0, dotIndex);
+  }
+  return idString;
 }

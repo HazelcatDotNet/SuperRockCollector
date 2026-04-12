@@ -91,12 +91,11 @@ void drawMenu() {
   }
 
   void openMenu(Menu menuToOpen) {
-    maisyStopTalking(); // if Maisy was talking, stop her from talking as soon as we open a menu
+    //maisyStopTalking(); // if Maisy was talking, stop her from talking as soon as we open a menu
     menuOpen = menuToOpen;
     menuOpeningAnimationInProgress = true;
     currentMenuSizeX = 0;
     currentMenuSizeY = 0;
-
   }
   
   void closeMenu() {

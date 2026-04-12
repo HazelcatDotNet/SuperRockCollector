@@ -12,10 +12,12 @@ Random random = new Random();
 int lastSecondTime;
 
 int rocksOnScreenLimit = 20;
+boolean playerEditedTotalRocksInSave;
 
 // the following variables are saved
 long totalRocks;
 ArrayList<Rock> rocks;
+String saveId;
 int oldScreenSize;
 int newScreenSize;
 int newFrameRate;

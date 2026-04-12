@@ -157,11 +157,7 @@ public class Rock {
   }
   
   void setId() {
-    id = random.ints(12, '0', '9' + 1)
-      .collect(StringBuilder::new,
-        StringBuilder::appendCodePoint,
-        StringBuilder::append)
-      .toString();
+    id = randomNumberString(12);
   }
   
   // sets the location of the rock, updating all edge locations as well
