@@ -335,7 +335,6 @@ void loadSettingsSection(ArrayList<String> lines) {
         if (setting.key.equals(key)) {
           if (setting.value instanceof Boolean) {
             setting.setValue(Boolean.parseBoolean(value));
-            handleSettingsChange(key, Boolean.parseBoolean(value));
           }
           break;
         }

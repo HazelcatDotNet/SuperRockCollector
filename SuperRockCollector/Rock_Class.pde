@@ -179,7 +179,7 @@ public class Rock {
   }
   
   void playSound() {
-    rockPopSound.play();
+    if (playSoundEffectSetting.isEnabled()) rockPopSound.play();
   }
   
   // returns whether or not the mouse cursor is currently within the bounds of a square rock

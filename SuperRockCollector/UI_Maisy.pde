@@ -88,12 +88,7 @@ void drawMaisyText() {
     }
     
     drawMaisySpeechBubble();
-    
-    // make the maisy noises while she talks
-    if (maisySoundsRemaining > 0 && intervalMs(maisyTalkSoundMsInterval)) {
-      maisyTalkSound.play();
-      maisySoundsRemaining--;
-    }
+    makeMaisyNoises();
     
     // draw the monologue text
     textSize(maisyTextSize);
@@ -101,6 +96,16 @@ void drawMaisyText() {
     String wrappedText = wrapText(maisyTalkingText, floor(maisyTextLineCharLimit * scaler));
     textAlign(LEFT, BASELINE);
     text(wrappedText, width / 1.6, corner / 3.25);
+  }
+}
+
+// make the maisy noises while she talks
+void makeMaisyNoises() {
+  if (!playSoundEffectSetting.isEnabled()) return;
+
+  if (maisySoundsRemaining > 0 && intervalMs(maisyTalkSoundMsInterval)) {
+    maisyTalkSound.play();
+    maisySoundsRemaining--;
   }
 }
 
