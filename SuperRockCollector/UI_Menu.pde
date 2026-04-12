@@ -78,6 +78,9 @@ void drawMenu() {
         case UPGRADES:
           checkForUpgradeBuyClicks();
           break;
+        case SETTINGS:
+          checkForSettingCheckboxClicks();
+          break;
         case DEBUG:
           checkForDebugMenuClicks();
           break;

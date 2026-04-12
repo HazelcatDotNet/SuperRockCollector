@@ -16,6 +16,7 @@ void setup() {
   // Automatically save when the window is closed
   attachAutoSave();
   
+  loadSettings();
   loadUpgrades();
   loadData();
   
@@ -53,7 +54,9 @@ void oncePerSecond() {
 void onGameLoad() {
   loaded = true;
   millisSinceLastSave = millis();
-  startSoundLoop(mainThemeSong);
+  if ((Boolean)playMusicSetting.value) {
+    startSoundLoop(mainThemeSong);
+  }
 }
 
 void mousePressed() {

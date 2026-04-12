@@ -53,9 +53,14 @@ void drawForegroundUi() {
 }
 
 void animateDrawing(PImage img1, PImage img2, float imgX, float imgY, float imgSizeX, float imgSizeY, int millisBetweenChanges) {
-  float elapsedTime = millis() / (float)millisBetweenChanges;
-  int phase = (int)elapsedTime % 2;
-  PImage imgToDraw = (phase == 0) ? img1 : img2;
+  PImage imgToDraw = img1;
+
+  if (animateSpritesSetting.isEnabled()) {
+    float elapsedTime = millis() / (float)millisBetweenChanges;
+    int phase = (int)elapsedTime % 2;
+    if (phase != 0) imgToDraw = img2;
+  }
+
 
   imageMode(CENTER);
   image(imgToDraw, imgX, imgY, imgSizeX, imgSizeY);

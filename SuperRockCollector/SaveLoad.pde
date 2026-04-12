@@ -88,6 +88,13 @@ void saveData() {
   lines.add("showRockHaulHitboxDebug=" + showRockHaulHitboxDebug);
   lines.add("[/debug]");
 
+  // ---- settings ----
+  lines.add("[settings]");
+  for (Setting setting : settings) {
+    lines.add(setting.key + "=" + setting.value);
+  }
+  lines.add("[/settings]");
+
   saveStrings(dataPath(SAVE_NAME), lines.toArray(new String[0]));
   println("[SaveLoad] Game saved. totalRocks=" + totalRocks
           + ", rocks=" + rocks.size() + ", upgrades=" + upgradeOrder.length);
@@ -168,6 +175,8 @@ void processSectionLines(String sectionName, ArrayList<String> lines) {
     loadJeffHaulSection(lines);
   } else if (sectionName.equals("debug")) {
     loadDebugSection(lines);
+  } else if (sectionName.equals("settings")) {
+    loadSettingsSection(lines);
   }
 }
 
@@ -307,6 +316,32 @@ void loadDebugSection(ArrayList<String> lines) {
 
     } catch (Exception e) {
       println("[SaveLoad] Skipping malformed debug entry: " + line);
+    }
+  }
+}
+
+// Load settings from the settings section
+void loadSettingsSection(ArrayList<String> lines) {
+  for (String line : lines) {
+    try {
+      String[] parts = split(line, '=');
+      if (parts.length < 2) continue;
+      
+      String key = parts[0];
+      String value = parts[1];
+      
+      // Find the setting by key and update its value
+      for (Setting setting : settings) {
+        if (setting.key.equals(key)) {
+          if (setting.value instanceof Boolean) {
+            setting.setValue(Boolean.parseBoolean(value));
+            handleSettingsChange(key, Boolean.parseBoolean(value));
+          }
+          break;
+        }
+      }
+    } catch (Exception e) {
+      println("[SaveLoad] Skipping malformed settings entry: " + line);
     }
   }
 }
