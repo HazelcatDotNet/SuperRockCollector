@@ -1,7 +1,8 @@
 public enum RockType {
   HARDY,
   LIZARD,
-  CAFFEINATED;
+  CAFFEINATED,
+  BALLOON;
 }
 
 // the number of Rock fields we save the data of
@@ -18,6 +19,7 @@ public class Rock {
   
   PVector loc;
   float speed;
+  boolean frozen;
   
   // current destination of the rock
   PVector dest;
@@ -76,7 +78,7 @@ public class Rock {
   
   // move the rock, bouncing it off walls if necessary
   void move() {
-    if (waitingToMove) {
+    if (waitingToMove || frozen) {
       return;
     }
     
@@ -124,17 +126,27 @@ public class Rock {
   }
   
   int onClick() {
-    playSound();
-
     // Track the click for this rock type
     rockClicksByType.put(rockType, rockClicksByType.get(rockType) + 1);
 
     if (shouldDestroyOnClick()) {
-      rocks.remove(this);
-      onDestroy();
+      runDestroyActions();
     }
 
+    runExtraOnClickActions();
+
     return rocksCollectedUponClick();
+  }
+
+  void runExtraOnClickActions() {
+    // default does nothing, but some rock types have extra actions to run on click
+    return;
+  }
+
+  void runDestroyActions() {
+    playSound();
+    rocks.remove(this);
+    onDestroy();
   }
 
   void onDestroy() {

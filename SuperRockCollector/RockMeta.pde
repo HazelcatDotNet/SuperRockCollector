@@ -8,7 +8,7 @@
 - add the rock type to newRockOfType in RockMeta
 - add the rock type to rollRockType in RockMeta, with appropriate weighting
 */
-String[] rockFileNames = { "hardy", "caffeinated" };
+String[] rockFileNames = { "hardy", "caffeinated", "balloon" };
 
 void initializeRockClickTracking() {
   for (RockType type : RockType.values()) {
@@ -24,6 +24,10 @@ void incrementRocks() {
     rock.calculateSpeed();
     rock.move();
     rock.waitToMove();
+
+    if (holdingObject && objectHeldByMouse == rock) {
+      ((BalloonRock) rock).incrementCharge();
+    }
   }
 }
 
@@ -34,7 +38,6 @@ void checkForRockClicks() {
   for (int i = rocks.size() - 1; i >= 0; i--) {
     Rock rock = rocks.get(i);
     if (rock.mouseOnRock()) {
-      rocks.remove(i);
       totalRocks += rock.onClick();
       
       // return after the rock click, because only one rock can be clicked per click
@@ -55,9 +58,10 @@ RockType rollRockType() {
   if (!upgradesByKey.get("deneutralizer").isToggledOn) return RockType.HARDY;
 
   HashMap<RockType, Integer> typeWeights = new LinkedHashMap<RockType, Integer>();
-  typeWeights.put(RockType.HARDY, 10);
-  typeWeights.put(RockType.LIZARD, 3);
-  typeWeights.put(RockType.CAFFEINATED, 2);
+  typeWeights.put(RockType.HARDY, 100);
+  typeWeights.put(RockType.LIZARD, 35);
+  typeWeights.put(RockType.CAFFEINATED, 25);
+  typeWeights.put(RockType.BALLOON, 20);
   
   int total = 0;
   for (int weight : typeWeights.values()) {
@@ -102,6 +106,7 @@ Rock newRockOfType(RockType rockType) {
   switch (rockType) {
     case LIZARD: return new LizardRock();
     case CAFFEINATED: return new CaffeinatedRock();
+    case BALLOON: return new BalloonRock();
     default:     return new HardyRock();
   }
 }

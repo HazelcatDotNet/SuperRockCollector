@@ -385,6 +385,18 @@ Rock rockFromData(String line) {
   if (r instanceof CaffeinatedRock && !p[12].equals("placeholder")) {
     ((CaffeinatedRock) r).setWillExplodeOnClick(boolean(p[12]));
   }
+  
+  if (r instanceof BalloonRock && !p[12].equals("placeholder")) {
+    String[] balloonData = p[12].split(",");
+    if (balloonData.length == 4) {
+      BalloonRock br = (BalloonRock) r;
+      br.velocity.x = float(balloonData[0]);
+      br.velocity.y = float(balloonData[1]);
+      br.displayCharge = float(balloonData[2]);
+      br.isMovingFree = boolean(balloonData[3]);
+      br.lastFrameTime = millis();
+    }
+  }
 
   r.setImage();                        // restore image after loading
   r.setLocation(r.loc.x, r.loc.y);    // recalculate edges

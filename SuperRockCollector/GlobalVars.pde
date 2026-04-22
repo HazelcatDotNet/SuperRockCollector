@@ -14,6 +14,9 @@ int lastSecondTime;
 int rocksOnScreenLimit = 20;
 boolean playerEditedTotalRocksInSave;
 
+Object objectHeldByMouse = null;
+boolean holdingObject = false;
+
 // the following variables are saved
 long totalRocks;
 ArrayList<Rock> rocks;
